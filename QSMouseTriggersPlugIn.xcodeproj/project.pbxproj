@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -177,9 +177,16 @@
 /* Begin PBXProject section */
 		0259C573FE90428111CA0C5A /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = 7FFF248C085E488500266176 /* Build configuration list for PBXProject "QSMouseTriggersPlugIn" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 0259C574FE90428111CA0C5A /* QSMouseTriggersPlugIn */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -236,6 +243,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 14DE8DC610D0BDFA00851A6F /* QSPlugIn_Release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				OTHER_LDFLAGS = "-bundle";
 				PRODUCT_NAME = "Mouse Triggers";
 				ZERO_LINK = NO;
@@ -246,6 +254,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 14DE8DC810D0BDFA00851A6F /* Release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 			};
 			name = Release;
 		};

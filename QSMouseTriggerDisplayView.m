@@ -6,7 +6,7 @@
 
 @implementation QSMouseTriggerDisplayView
 
-- (id)initWithFrame:(NSRect)frame anchor:(int)thisAnchor{
+- (id)initWithFrame:(NSRect)frame anchor:(NSUInteger)thisAnchor{
     self = [super initWithFrame:frame];
     if (self) {
         anchor=thisAnchor;
@@ -31,7 +31,7 @@
         [highlight set];
         NSRectFillUsingOperation(rect,NSCompositeSourceIn);
         
-    }else{
+    } else {
         [self _drawRect:(NSRect)rect withGradientFrom:highlight to:[[NSColor selectedTextBackgroundColor] colorWithAlphaComponent:0.0] start:anchor-5];    
     }
 }
@@ -40,7 +40,7 @@
 - (void)_drawRect:(NSRect)rect withGradientFrom:(NSColor*)colorStart to:(NSColor*)colorEnd start:(NSRectEdge)edge{
     NSRect remainingRect;
     int i;
-    int index = (edge==NSMinXEdge||edge==NSMaxXEdge)?rect.size.width:rect.size.height;
+    int index = (int)(edge==NSMinXEdge||edge==NSMaxXEdge)?rect.size.width:rect.size.height;
     remainingRect = rect;
     
     NSColor *colors[index];
@@ -48,7 +48,7 @@
     
     for ( i = 0; i < index; i++ ){
         NSDivideRect ( remainingRect, &rects[i], &remainingRect, 1.0, edge);
-        colors[i]=[colorStart blendedColorWithFraction:(float)i/(float)index ofColor:colorEnd];
+        colors[i]=[colorStart blendedColorWithFraction:(CGFloat)i/(CGFloat)index ofColor:colorEnd];
     }
     NSRectFillListWithColors(&rects[0],&colors[0],index);
 }

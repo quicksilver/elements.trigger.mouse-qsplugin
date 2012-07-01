@@ -9,7 +9,7 @@
 #define ESIZE 1
 
 
-NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
+NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset){
     
     switch(anchor){
         case QSMaxXAnchor:
@@ -46,7 +46,7 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
 @implementation QSMouseTriggerView
 
 
-+ (id)triggerWindowWithAnchor:(int)thisAnchor onScreenNum:(int)thisScreen{
++ (id)triggerWindowWithAnchor:(NSUInteger)thisAnchor onScreenNum:(NSInteger)thisScreen{
     NSWindow* window = [[[QSMouseTriggerWindow alloc]initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask|NSNonactivatingPanelMask backing:NSBackingStoreBuffered defer:YES]autorelease];
     [window setBackgroundColor: [NSColor clearColor]];
     [window setOpaque:NO];
@@ -61,7 +61,7 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     return window;
 }
 
-- (id)initWithFrame:(NSRect)frame anchor:(int)thisAnchor onScreenNum:(int)thisScreen{
+- (id)initWithFrame:(NSRect)frame anchor:(NSUInteger)thisAnchor onScreenNum:(NSInteger)thisScreen{
     self = [super initWithFrame:frame];
     if (self) {
         anchor=thisAnchor;
@@ -76,8 +76,6 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     [self registerForDraggedTypes:standardPasteboardTypes];
 }
 - (void)updateFrame{
-    int inset=0;
-    if (anchor>4) inset=32;
     NSRect rect=rectForAnchor(anchor,[[self screen]frame],anchor<5?2:1,64);
   //  NSLog(@"View %d:%d",screen, anchor);
 //logRect(rect);
@@ -217,8 +215,8 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     if (!displayWindow){
         displayWindow=[[QSWindow alloc]initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
 
-		[displayWindow setShowEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"show",@"type",[NSNumber numberWithFloat:0.2],@"duration",nil]];
-		[displayWindow setHideEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"hide",@"type",[NSNumber numberWithFloat:0.2],@"duration",nil]];
+		[displayWindow setShowEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"show",@"type",[NSNumber numberWithDouble:0.2],@"duration",nil]];
+		[displayWindow setHideEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"hide",@"type",[NSNumber numberWithDouble:0.2],@"duration",nil]];
 		
 			
         [displayWindow setHidesOnDeactivate:NO];

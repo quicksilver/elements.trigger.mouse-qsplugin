@@ -5,8 +5,8 @@
 
 @interface QSMouseTriggerDisplayView : NSView {
     BOOL active;
-    int anchor;
+    NSUInteger anchor;
 }
-- (id)initWithFrame:(NSRect)frame anchor:(int)thisAnchor;
+- (id)initWithFrame:(NSRect)frame anchor:(NSUInteger)thisAnchor;
 - (void)_drawRect:(NSRect)rect withGradientFrom:(NSColor*)colorStart to:(NSColor*)colorEnd start:(NSRectEdge)edge;
 @end

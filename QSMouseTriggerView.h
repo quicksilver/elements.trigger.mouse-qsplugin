@@ -29,7 +29,7 @@ QSMaxYAnchorMask                = 1 << QSMaxYAnchor
 
 
 
-NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset);
+NSRect rectForAnchor(NSUInteger anchor, NSRect rect, CGFloat size, CGFloat inset);
 
 @interface QSMouseTriggerWindow : NSPanel
 @end
@@ -42,13 +42,13 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset);
     bool captureMode;
 	NSScreen *screen;
 	@public
-    int anchor;
-	int screenNum;
+    NSUInteger anchor;
+	NSInteger screenNum;
 	//NSPasteboard *dragPboard;
 }
 
 //+ (id)triggerWindowWithAnchor:(int)thisAnchor onScreen:(NSScreen *)screen;
-+ (id)triggerWindowWithAnchor:(int)thisAnchor onScreenNum:(int)thisScreen;
++ (id)triggerWindowWithAnchor:(NSUInteger)thisAnchor onScreenNum:(NSInteger)thisScreen;
 - (NSWindow *)displayWindow;
 - (void)updateDisplayFrame;
 - (void)updateFrame;

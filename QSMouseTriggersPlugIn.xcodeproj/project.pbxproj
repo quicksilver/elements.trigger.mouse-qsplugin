@@ -25,18 +25,15 @@
 		14DE8DC210D0BDFA00851A6F /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		14DE8DC310D0BDFA00851A6F /* Developer.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Developer.xcconfig; sourceTree = "<group>"; };
 		14DE8DC410D0BDFA00851A6F /* QSPlugIn_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = QSPlugIn_Debug.xcconfig; sourceTree = "<group>"; };
-		14DE8DC510D0BDFA00851A6F /* QSPlugIn_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSPlugIn_Prefix.pch; sourceTree = "<group>"; };
 		14DE8DC610D0BDFA00851A6F /* QSPlugIn_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = QSPlugIn_Release.xcconfig; sourceTree = "<group>"; };
 		14DE8DC710D0BDFA00851A6F /* QSPlugIn.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = QSPlugIn.xcconfig; sourceTree = "<group>"; };
 		14DE8DC810D0BDFA00851A6F /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		32DBCF980370C29C00C91783 /* QSMouseTriggersPlugIn_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSMouseTriggersPlugIn_Prefix.pch; sourceTree = "<group>"; };
 		7FD8F5C807EBA3F700F57CB7 /* QSMouseTriggerDescriptionView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QSMouseTriggerDescriptionView.h; sourceTree = SOURCE_ROOT; };
 		7FD8F5C907EBA3F700F57CB7 /* QSMouseTriggerDescriptionView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = QSMouseTriggerDescriptionView.m; sourceTree = SOURCE_ROOT; };
 		7FD8F5CA07EBA3F700F57CB7 /* QSMouseTriggerDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QSMouseTriggerDisplayView.h; sourceTree = SOURCE_ROOT; };
 		7FD8F5CB07EBA3F700F57CB7 /* QSMouseTriggerDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = QSMouseTriggerDisplayView.m; sourceTree = SOURCE_ROOT; };
 		7FD8F5CC07EBA3F700F57CB7 /* QSMouseTriggerManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QSMouseTriggerManager.h; sourceTree = SOURCE_ROOT; };
 		7FD8F5CD07EBA3F700F57CB7 /* QSMouseTriggerManager.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = QSMouseTriggerManager.m; sourceTree = SOURCE_ROOT; };
-		7FD8F5CE07EBA3F700F57CB7 /* QSMouseTriggersPlugIn_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QSMouseTriggersPlugIn_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		7FD8F5CF07EBA3F700F57CB7 /* QSMouseTriggerView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QSMouseTriggerView.h; sourceTree = SOURCE_ROOT; };
 		7FD8F5D007EBA3F700F57CB7 /* QSMouseTriggerView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = QSMouseTriggerView.m; sourceTree = SOURCE_ROOT; };
 		7FD8F5D507EBA3FE00F57CB7 /* QSMouseTrigger.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = QSMouseTrigger.nib; sourceTree = SOURCE_ROOT; };
@@ -45,10 +42,9 @@
 		8D1AC9730486D14A00FE50C9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1AC9740486D14A00FE50C9 /* Mouse Triggers.qsplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mouse Triggers.qsplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD92D38A0106425D02CA0E72 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		E1022AE706B3469300299BEC /* QSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QSCore.framework; path = /Applications/Quicksilver.app/Contents/Frameworks/QSCore.framework; sourceTree = "<absolute>"; };
-		E1022AE806B3469300299BEC /* QSInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QSInterface.framework; path = /Applications/Quicksilver.app/Contents/Frameworks/QSInterface.framework; sourceTree = "<absolute>"; };
-		E131F8AD07B447EF00D0E4AC /* QSEffects.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QSEffects.framework; path = /Applications/Quicksilver.app/Contents/Frameworks/QSEffects.framework; sourceTree = "<absolute>"; };
-		E131F8AE07B447EF00D0E4AC /* QSFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QSFoundation.framework; path = /Applications/Quicksilver.app/Contents/Frameworks/QSFoundation.framework; sourceTree = "<absolute>"; };
+		E1022AE706B3469300299BEC /* QSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E131F8AD07B447EF00D0E4AC /* QSEffects.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QSEffects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E131F8AE07B447EF00D0E4AC /* QSFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QSFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +68,6 @@
 			children = (
 				14DE8DC010D0BDDB00851A6F /* Configuration */,
 				32DBCF9E0370C38000C91783 /* Classes */,
-				32DBCF9F0370C38200C91783 /* Other Sources */,
 				0259C582FE90428111CA0C5A /* Resources */,
 				1ED78706FE9D4A0611CA0C5A /* Products */,
 				2E58F364FFB232C311CA0CBA /* Frameworks */,
@@ -97,13 +92,13 @@
 				14DE8DC210D0BDFA00851A6F /* Debug.xcconfig */,
 				14DE8DC310D0BDFA00851A6F /* Developer.xcconfig */,
 				14DE8DC410D0BDFA00851A6F /* QSPlugIn_Debug.xcconfig */,
-				14DE8DC510D0BDFA00851A6F /* QSPlugIn_Prefix.pch */,
 				14DE8DC610D0BDFA00851A6F /* QSPlugIn_Release.xcconfig */,
 				14DE8DC710D0BDFA00851A6F /* QSPlugIn.xcconfig */,
 				14DE8DC810D0BDFA00851A6F /* Release.xcconfig */,
 			);
-			path = Configuration;
-			sourceTree = QS_SOURCE_ROOT;
+			name = Configuration;
+			path = /private/tmp/QS/Configuration;
+			sourceTree = "<absolute>";
 		};
 		1ED78706FE9D4A0611CA0C5A /* Products */ = {
 			isa = PBXGroup;
@@ -121,7 +116,6 @@
 				E131F8AE07B447EF00D0E4AC /* QSFoundation.framework */,
 				E1022AE706B3469300299BEC /* QSCore.framework */,
 				E131F8AD07B447EF00D0E4AC /* QSEffects.framework */,
-				E1022AE806B3469300299BEC /* QSInterface.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -135,19 +129,10 @@
 				7FD8F5CB07EBA3F700F57CB7 /* QSMouseTriggerDisplayView.m */,
 				7FD8F5CC07EBA3F700F57CB7 /* QSMouseTriggerManager.h */,
 				7FD8F5CD07EBA3F700F57CB7 /* QSMouseTriggerManager.m */,
-				7FD8F5CE07EBA3F700F57CB7 /* QSMouseTriggersPlugIn_Prefix.pch */,
 				7FD8F5CF07EBA3F700F57CB7 /* QSMouseTriggerView.h */,
 				7FD8F5D007EBA3F700F57CB7 /* QSMouseTriggerView.m */,
 			);
 			name = Classes;
-			sourceTree = "<group>";
-		};
-		32DBCF9F0370C38200C91783 /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				32DBCF980370C29C00C91783 /* QSMouseTriggersPlugIn_Prefix.pch */,
-			);
-			name = "Other Sources";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,12 +226,10 @@
 /* Begin XCBuildConfiguration section */
 		7FFF248A085E488500266176 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 14DE8DC610D0BDFA00851A6F /* QSPlugIn_Release.xcconfig */;
+			baseConfigurationReference = 14DE8DC710D0BDFA00851A6F /* QSPlugIn.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				OTHER_LDFLAGS = "-bundle";
 				PRODUCT_NAME = "Mouse Triggers";
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -254,9 +237,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 14DE8DC810D0BDFA00851A6F /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 			};
 			name = Release;
+		};
+		CD48BAED15A0BDB9002158B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14DE8DC210D0BDFA00851A6F /* Debug.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		CD48BAEE15A0BDB9002158B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14DE8DC710D0BDFA00851A6F /* QSPlugIn.xcconfig */;
+			buildSettings = {
+				OTHER_LDFLAGS = "-bundle";
+				PRODUCT_NAME = "Mouse Triggers";
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
@@ -265,6 +263,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7FFF248A085E488500266176 /* Release */,
+				CD48BAEE15A0BDB9002158B7 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -273,6 +272,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7FFF248E085E488500266176 /* Release */,
+				CD48BAED15A0BDB9002158B7 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

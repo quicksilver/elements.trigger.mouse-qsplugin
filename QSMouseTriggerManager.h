@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <QSCore/QSTriggerManager.h>
 #import "QSMouseTriggerView.h"
 
 @interface QSMouseTriggerManager : QSTriggerManager {

@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <QSCore/QSTriggerManager.h>
 #import "QSMouseTriggerView.h"
 
 @interface QSMouseTriggerManager : QSTriggerManager {
@@ -31,6 +30,8 @@
 	
 	
 	id mouseTriggerObject;
+    
+    BOOL multipleScreensExist;
 }
 
 + (id)sharedInstance;
@@ -47,8 +48,14 @@
 - (void)populateInfoFields;
 - (NSString *)descriptionForMouseTrigger:(NSDictionary *)dict;
 - (void)handleMouseTriggerEvent:(NSEvent *)theEvent forView:(QSMouseTriggerView *)view;
-- (void)handleMouseTriggerEvent:(NSEvent *)theEvent type:(int)type forView:(QSMouseTriggerView *)view;
+- (void)handleMouseTriggerEvent:(NSEvent *)theEvent type:(NSEventType)type forView:(QSMouseTriggerView *)view;
 
 - (id)mouseTriggerObject;
 - (void)setMouseTriggerObject:(id)newMouseTriggerObject;
-@end
+
+-(BOOL)isMainDisplay;
+
+-(NSArray *)screensForScreenTag:(NSInteger)screenTag;
+-(void)addTriggerDictionary:(NSDictionary *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens;
+
+    @end

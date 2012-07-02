@@ -38,7 +38,7 @@
 	
 	[flipTransform concat];
 	
-	int anchors=[[[self representedObject] objectForKey:@"anchorMask"]intValue];
+	NSUInteger anchors=[[[self representedObject] objectForKey:@"anchorMask"] unsignedIntegerValue];
 	
 	
 	NSBezierPath *path=[NSBezierPath bezierPath];
@@ -121,7 +121,7 @@ BOOL is1043;
 }
 - (void)initializeTrigger:(NSMutableDictionary *)trigger{
 	if (![trigger objectForKey:@"eventType"])
-		[trigger setObject:[NSNumber numberWithInt:NSLeftMouseDown] forKey:@"eventType"];	
+		[trigger setObject:[NSNumber numberWithUnsignedInteger:NSLeftMouseDown] forKey:@"eventType"];	
 }
 
 + (id)sharedInstance{
@@ -158,53 +158,61 @@ BOOL is1043;
 }
 
 
--(NSMutableArray *)anchorArrayForScreen:(int)screen anchor:(int)anchor{
-	NSString *key=[NSString stringWithFormat:@"%d:%d",screen,anchor];
+-(NSMutableArray *)anchorArrayForScreen:(NSInteger)screen anchor:(NSUInteger)anchor{
+	NSString *key=[NSString stringWithFormat:@"%ld:%lu",(long)screen, (unsigned long)anchor];
 	NSMutableArray *array=[anchorArrays objectForKey:key];
 	if (!array){
 		array=[NSMutableArray array];
 		[anchorArrays setObject:array forKey:key];
-		//NSLog(@"Array %@",key);
+		//NSLog(@"Set %@",key);
 	}
 	return array;
 }
 
+-(void)addTriggerDictionary:(NSDictionary *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens {
+    for (NSScreen *screen in screens) {
+        NSMutableArray *matchedArray = 	[self anchorArrayForScreen:[screen screenNumber] anchor:anchor];
+        if (![matchedArray containsObject:entry]) {
+            [matchedArray addObject:entry];
+        }
+    }
+}
+
+// Gets the screen(s) (as an array) based on the tag of the popup menu in the trigger settings
+-(NSArray *)screensForScreenTag:(NSInteger)screenTag {
+    
+    NSArray *screens=[NSScreen screens];
+	NSUInteger screenCount=[screens count];
+
+    if (screenTag==0 || (screenTag==-1 && screenCount==1)) {
+        return [NSArray arrayWithObject:[screens objectAtIndex:0]];
+    } else if (screenTag==1) {
+        if (screenCount>1) {
+            return [NSArray arrayWithObject:[screens objectAtIndex:1]];
+        }
+    } else if (screenTag==-1 && screenCount>1) {
+        return screens;
+    } else {
+        return [NSArray arrayWithObject:[NSScreen screenWithNumber:screenTag]];
+    }
+    
+    return nil;
+    
+}
 
 -(BOOL)enableTrigger:(NSDictionary *)entry{
-	int anchorMask=[[entry objectForKey:@"anchorMask"]intValue];
-	int screen=[[entry objectForKey:@"screen"]intValue];
+	NSUInteger anchorMask=[[entry objectForKey:@"anchorMask"] unsignedIntegerValue];
 	BOOL anywhere=[[entry objectForKey:@"anywhere"]boolValue];
-	
-	NSArray *screens=[NSScreen screens];
-	int screenCount=[screens count];
-	
+    NSInteger screenTag = [[entry objectForKey:@"screen"] integerValue];
+
 	if (anywhere)
 		[anywhereArray addObject:entry];
 	
-	int i;
+	NSUInteger i;
 	//NSArray *array;
 	for (i=1;i<9;i++){
 		if ((1 << i) & anchorMask){
-			
-			if (screen==0 || (screen==-1 && screenCount==1)){
-				[[self anchorArrayForScreen:[[screens objectAtIndex:0]screenNumber]
-									 anchor:i] addObject:entry];
-			}else if (screen==1){
-				if (screenCount>1){
-					[[self anchorArrayForScreen:[[screens objectAtIndex:1]screenNumber]
-										 anchor:i] addObject:entry];
-				}
-			}else if (screen==-1 && screenCount>1){
-				for(NSScreen * targetScreen in screens){
-					[[self anchorArrayForScreen:[targetScreen screenNumber]
-										 anchor:i] addObject:entry];	
-				}
-			}else{
-				[[self anchorArrayForScreen:screen anchor:i]  addObject:entry];
-			}
-			
-			
-			
+            [self addTriggerDictionary:entry toAnchorArray:i forScreens:[self screensForScreenTag:screenTag]];
 		}
 		
 	}
@@ -221,94 +229,95 @@ BOOL is1043;
     return YES;
 }
 
-- (NSWindow *)triggerDescriptionWindowForAnchor:(int)anchor onScreen:(NSScreen *)screen{
+- (NSWindow *)triggerDescriptionWindowForAnchor:(NSUInteger)anchor onScreen:(NSScreen *)screen{
 	//	NSArray *array=[anchorArrays objectForKey:[NSString stringWithFormat:@"%d",anchor]];
 	
 	
-	//	NSDictionary *thisTrigger;
+	//	NSDictionary *[currentTrigger info];
 	//	NSEnumerator *triggerEnum=[[anchorArrays objectForKey:[NSString stringWithFormat:@"%d",anchor]]objectEnumerator];
     
-	//    while(thisTrigger=[triggerEnum nextObject]){
-	//		NSLog(@"\rTrigger: %@\rCommand: %@",[self descriptionForTrigger:thisTrigger],[[QSTriggerCenter commandForTrigger:thisTrigger]description]);
+	//    while([currentTrigger info]=[triggerEnum nextObject]){
+	//		NSLog(@"\rTrigger: %@\rCommand: %@",[self descriptionForTrigger:[currentTrigger info]],[[QSTriggerCenter commandForTrigger:[currentTrigger info]]description]);
 	//	}	
 	return nil;
 }
 
 
 
-- (void)handleMouseTriggerEvent:(NSEvent *)theEvent type:(int)type forView:(QSMouseTriggerView *)view{
+- (void)handleMouseTriggerEvent:(NSEvent *)theEvent type:(NSEventType)type forView:(QSMouseTriggerView *)view{
 	//NSLog(@"Mouse %@",theEvent);
-	int anchor=view?view->anchor:-1;
-	int screen=view?view->screenNum:-1;
-	NSDictionary *thisTrigger;
-	NSEnumerator *triggerEnum=nil;
+	NSUInteger anchor= view ? view->anchor : -1;
+	NSInteger screen= view ? view->screenNum : -1;
+	NSArray *enumerateArray=nil;
 	
 	if (!view)
-		triggerEnum=[anywhereArray objectEnumerator];
+		enumerateArray = anywhereArray;
     else
-		triggerEnum=[[anchorArrays objectForKey:[NSString stringWithFormat:@"%d:%d",screen,anchor]]objectEnumerator];
+		enumerateArray = [anchorArrays objectForKey:[NSString stringWithFormat:@"%ld:%lu",screen,anchor]];
     
 	NSMutableArray *matchedTriggers=[NSMutableArray array];
 	BOOL checkForMoreClicks=NO;
 	//BOOL checkForDelay=NO;
 	
 	//int inverseEvent=0;
-	int inverseEventMask= 1 << (type+1);
+	NSEventType inverseEventMask = 1 << (type+1);
 	NSDate *date=[NSDate date];
-	float thisDelay=0.0;
-	float longestDelay=0.0;
-    while(thisTrigger=[triggerEnum nextObject]){
-		if (!type) type=[theEvent type];
-		if (!theEvent) theEvent=[NSApp currentEvent];
-		//				NSLog(@"match %@",thisTrigger);
-        if ([[thisTrigger objectForKey:@"eventType"]intValue]!=type) continue;
-		//	NSLog(@"match1 %@",[thisTrigger info]);
-		if (type==NSOtherMouseDown && [[thisTrigger objectForKey:@"buttonNumber"]intValue]!=([theEvent buttonNumber]+1))continue;
-		//NSLog(@"match2 %@",[thisTrigger description]);
-		int flags=[[thisTrigger objectForKey:@"modifierFlags"]intValue];
+	CGFloat thisDelay = 0.0;
+	CGFloat longestDelay = 0.0;
+    for (QSTrigger *thisTrigger in enumerateArray){
+		if (!type) {
+            type = [theEvent type];
+        }
+        if ([[[thisTrigger info] objectForKey:@"eventType"] unsignedIntegerValue]!=type) {
+            continue;
+        }
+        if (!theEvent) {
+            theEvent = [NSApp currentEvent];
+        }
+		if (type==NSOtherMouseDown && [[[thisTrigger info] objectForKey:@"buttonNumber"] integerValue]!=([theEvent buttonNumber]+1)) {
+            continue;
+        }
+        
+		NSUInteger flags=[[[thisTrigger info] objectForKey:@"modifierFlags"] unsignedIntegerValue];
 		
-		int currentFlags=[theEvent modifierFlags];
+		NSUInteger currentFlags=[theEvent modifierFlags];
 		
-		if(flags!=(currentFlags&NSAllModifierKeysMask))continue;
+		if(flags!=(currentFlags&NSAllModifierKeysMask)) {
+            continue;
+        }
 		
 		if (type==NSLeftMouseDown || type==NSRightMouseDown || type==NSOtherMouseDown){
 #warning if only single click events are enabled, multi clicks should still resolve
-			int clickCount=[[thisTrigger objectForKey:@"clickCount"]intValue];
-			if (!clickCount)clickCount=1;
-			if (clickCount && clickCount!=[theEvent clickCount]){
+			NSInteger clickCount=[[[thisTrigger info] objectForKey:@"clickCount"] unsignedIntegerValue];
+			if (!clickCount) {
+                clickCount=1;
+            }
+			if (clickCount != [theEvent clickCount]) {
 				if (clickCount>[theEvent clickCount])
 					checkForMoreClicks=YES;
 				continue;
 			}
 		}
 		
+		id delayValue=[[thisTrigger info] objectForKey:@"delay"];
+		thisDelay = delayValue ? [delayValue doubleValue]:0;
 		
-		
-		id delayValue=[thisTrigger objectForKey:@"delay"];
-		thisDelay=delayValue?[delayValue floatValue]:0;
-		
-		if (thisDelay<longestDelay){
+		if (thisDelay<longestDelay) {
 			continue;
-		}else if (thisDelay>longestDelay){
+		} else if (thisDelay>longestDelay) {
 			//NSLog(@"lookingForDelay %f",thisDelay,longestDelay);
-			NSEvent *anEvent=[NSApp nextEventMatchingMask:inverseEventMask untilDate:[date addTimeInterval:thisDelay] inMode:NSDefaultRunLoopMode dequeue:NO];
+			NSEvent *anEvent=[NSApp nextEventMatchingMask:inverseEventMask untilDate:[date dateByAddingTimeInterval:thisDelay] inMode:NSDefaultRunLoopMode dequeue:NO];
 			
-			if (anEvent){
-				//NSLog(@"skipping x %@",anEvent);
-				
-				
+			if (anEvent){				
 				continue;
-			}else{
+			}else {
 				
 				//NSLog(@"accepting x, clearing previous %d",[matchedTriggers count]);
-				longestDelay=thisDelay;
+				longestDelay = thisDelay;
 				[matchedTriggers removeAllObjects];
 			}
 			
 		}
-		
-		
-		
 		
 		[matchedTriggers addObject:thisTrigger];
 		
@@ -316,14 +325,11 @@ BOOL is1043;
 	
 	
 	if (checkForMoreClicks){
-		NSEvent *anotherClick=[NSApp nextEventMatchingMask:1<<[theEvent type] untilDate:[NSDate dateWithTimeIntervalSinceNow:0.25] inMode:NSDefaultRunLoopMode dequeue:NO];
+		NSEvent *anotherClick=[NSApp nextEventMatchingMask:1<<[theEvent type] untilDate:[NSDate dateWithTimeIntervalSinceNow:0.2] inMode:NSDefaultRunLoopMode dequeue:NO];
 		if (anotherClick) return;
 	}
 	
-	
-	
 	for(id match in matchedTriggers){
-		//	NSLog(@"matched %@",match);
 		[[QSTriggerCenter sharedInstance] executeTrigger:match]; 
 	}
 	
@@ -337,7 +343,7 @@ BOOL is1043;
 - (NSString *)descriptionForTrigger:(NSDictionary *)dict{
 	
 	//return [self descriptionForMouseTrigger:dict];
-	int anchors=[[dict objectForKey:@"anchorMask"]intValue];
+	NSUInteger anchors=[[dict objectForKey:@"anchorMask"] unsignedIntegerValue];
 	
 	NSMutableString *desc=[NSMutableString stringWithCapacity:0];
     
@@ -381,7 +387,7 @@ BOOL is1043;
 	
     NSMutableString *desc=[NSMutableString stringWithCapacity:0];
     
-    int modifiers=[[dict objectForKey:@"modifierFlags"]intValue];
+    NSUInteger modifiers=[[dict objectForKey:@"modifierFlags"] unsignedIntegerValue];
 	
 	
     
@@ -391,7 +397,7 @@ BOOL is1043;
     if (modifiers&NSCommandKeyMask)[desc appendFormat:@"%C",0x2318];
     if (modifiers&NSFunctionKeyMask)[desc appendString:@"Fn"];
     
-    NSEventType type=[[dict objectForKey:@"eventType"]intValue];
+    NSEventType type=[[dict objectForKey:@"eventType"] unsignedIntegerValue];
 	
 	
     switch (type){
@@ -402,7 +408,7 @@ BOOL is1043;
             [desc appendFormat:@"%C%C",0x25BD,0x1D3F];
             break;
         case NSOtherMouseDown:
-			switch ([[dict objectForKey:@"buttonNumber"]intValue]){
+			switch ([[dict objectForKey:@"buttonNumber"] integerValue]){
 				case 3: [desc appendFormat:@"%C%C",0x25BD,0x00B3]; break;
 				case 4: [desc appendFormat:@"%C%C",0x25BD,0x2074]; break;
 				case 5: [desc appendFormat:@"%C%C",0x25BD,0x2075]; break;
@@ -426,14 +432,14 @@ BOOL is1043;
     }
     
     
-    int clickCount=[[dict objectForKey:@"clickCount"]intValue];
+    NSInteger clickCount=[[dict objectForKey:@"clickCount"] integerValue];
     if (clickCount>1)
         [desc appendFormat:@"%C%d",0x00D7,clickCount];
     
     
 	//   NSLog(@"clickdel %@",[dict objectForKey:@"clickDelay"]);
-    if ([dict objectForKey:@"delay"] && [[dict objectForKey:@"delay"]floatValue]>0)
-        [desc appendFormat:@"...%.1fs",[[dict objectForKey:@"clickDelay"]floatValue]];
+    if ([dict objectForKey:@"delay"] && [[dict objectForKey:@"delay"]doubleValue]>0)
+        [desc appendFormat:@"...%.1fs",[[dict objectForKey:@"clickDelay"]doubleValue]];
     
     
     
@@ -446,23 +452,24 @@ BOOL is1043;
     NSString *key;
     
     NSEnumerator *triggerEnum;
-    NSDictionary *thisTrigger;
     BOOL visible;
     BOOL clickable;
     BOOL draggable;
-	int mainScreenNum=[[NSScreen mainScreen]screenNumber];
+	NSInteger mainScreenNum=[[NSScreen mainScreen]screenNumber];
 	//  NSLog(@"asch%@",anchorArrays);
     while (key=[keyEnum nextObject]){
         triggerEnum=[[anchorArrays objectForKey:key]objectEnumerator];
         visible=clickable=draggable=NO;
         NSMutableArray *tips=[NSMutableArray arrayWithCapacity:0];
-        while(thisTrigger=[triggerEnum nextObject]){
+        for(QSTrigger *thisTrigger in triggerEnum){
             
-            if (![[thisTrigger objectForKey:@"enabled"]boolValue])continue;
+            if (![[[thisTrigger info] objectForKey:@"enabled"] boolValue]) {
+                continue;
+            }
             
-            [tips addObject:[NSString stringWithFormat:@"%@:\t%@",[self descriptionForMouseTrigger:thisTrigger],[thisTrigger name]]];
+            [tips addObject:[NSString stringWithFormat:@"%@:\t%@",[self descriptionForMouseTrigger:[thisTrigger info]],[thisTrigger name]]];
             visible=YES;
-            NSEventType type=[[thisTrigger objectForKey:@"eventType"]intValue];
+            NSEventType type=[[[thisTrigger info] objectForKey:@"eventType"] unsignedIntegerValue];
             switch (type){
                 case NSLeftMouseDown:
                 case NSRightMouseDown:
@@ -485,8 +492,11 @@ BOOL is1043;
             NSWindow *window=[anchorWindows objectForKey:key];
             if (!window){
 				NSArray *components=[key componentsSeparatedByString:@":"];
-				int anchor=[[components objectAtIndex:1] intValue];
-				int screenNum=[[components objectAtIndex:0] intValue];
+				NSInteger tempAnchor;
+                [[NSScanner scannerWithString:[components objectAtIndex:1]] scanInteger:&tempAnchor] ;
+                NSUInteger anchor = (NSUInteger)tempAnchor;
+				NSInteger screenNum;
+                [[NSScanner scannerWithString:[components objectAtIndex:0]] scanInteger:&screenNum];
 				
 				//	NSLog(@"%d %x",anchor,screenNum);
 				if (anchor==QSMaxYAnchor && screenNum==mainScreenNum){
@@ -511,12 +521,12 @@ BOOL is1043;
 
 -(void)enableCaptureMode{
     
-    int i;
+    NSUInteger i;
     for(i=1;i<9;i++){
-        NSString *key=[NSString stringWithFormat:@"%d",i];
-        NSWindow *window=[anchorWindows objectForKey:key];
+        NSString *key=[NSString stringWithFormat:@"%lu",(unsigned long)i];
+        NSWindow *window = [anchorWindows objectForKey:key];
         if (!window){
-            window=[QSMouseTriggerView triggerWindowWithAnchor:i onScreen:nil];
+            window= [QSMouseTriggerView triggerWindowWithAnchor:i onScreenNum:0];
             [anchorWindows setObject:window forKey:key];
 			// if (VERBOSE)NSLog(@"Creating anchor window %d",i);
             [[window contentView]setToolTip:nil];
@@ -532,9 +542,9 @@ BOOL is1043;
 
 
 -(void)disableCaptureMode{
-    int i;
+    NSUInteger i;
     for(i=1;i<9;i++){
-        NSWindow *window=[anchorWindows objectForKey:[NSString stringWithFormat:@"%d",i]];
+        NSWindow *window=[anchorWindows objectForKey:[NSString stringWithFormat:@"%lu",(unsigned long)i]];
         [[window contentView]setCaptureMode:NO];
         
     }
@@ -551,26 +561,17 @@ BOOL is1043;
 
 
 
-
-
-
-
-
-
-
-
 - (void)populateInfoFields{
-	NSDictionary *thisTrigger=currentTrigger;
 	//NSLog(@"trigger %@",currentTrigger);
-	if([[thisTrigger objectForKey:@"type"]isEqualToString:@"QSMouseTrigger"]){
-		int eventType=[[thisTrigger objectForKey:@"eventType"]intValue];
+	if([[currentTrigger type] isEqualToString:@"QSMouseTrigger"]){
+		NSEventType eventType=[[[currentTrigger info] objectForKey:@"eventType"] unsignedIntegerValue];
 		BOOL otherClick=eventType==NSOtherMouseDown;
 		
-		int modifiersMask=[[thisTrigger objectForKey:@"modifierFlags"]intValue];
-		BOOL anywhere=[[thisTrigger objectForKey:@"anywhere"]boolValue] && (otherClick);
+		NSUInteger modifiersMask=[[[currentTrigger info] objectForKey:@"modifierFlags"]unsignedIntegerValue];
+		BOOL anywhere=[[[currentTrigger info] objectForKey:@"anywhere"]boolValue] && (otherClick);
 		
 		[mouseTriggerScreenPopUp removeAllItems];
-		id <NSMenuItem>item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"All Displays" action:nil keyEquivalent:@""];
+		NSMenuItem *item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"All Displays" action:nil keyEquivalent:@""];
 		[item setTag:-1];
 		
 		item=[NSMenuItem separatorItem];
@@ -600,7 +601,7 @@ BOOL is1043;
 			[item setTag:[screen screenNumber]];
 		}
 		
-		int screenNum=[[thisTrigger objectForKey:@"screen"]intValue];
+		int screenNum= [[[currentTrigger info] objectForKey:@"screen"]intValue];
 		if (anywhere)screenNum=-1;
 		[mouseTriggerScreenPopUp setEnabled:!anywhere];
 		item=[[mouseTriggerScreenPopUp menu]itemWithTag:screenNum];
@@ -629,20 +630,20 @@ BOOL is1043;
 		BOOL clickEvent=(eventType==NSLeftMouseDown || eventType==NSRightMouseDown || eventType==NSOtherMouseDown);
 		
 		if (eventType==NSOtherMouseDown)
-			eventType+=[[thisTrigger objectForKey:@"buttonNumber"]intValue]-3;
+			eventType+= (NSUInteger)[[[currentTrigger info] objectForKey:@"buttonNumber"] integerValue]-3;
 		
-		int index=[mouseTriggerTypePopUp indexOfItemWithTag:eventType];
+		NSInteger index=[mouseTriggerTypePopUp indexOfItemWithTag:eventType];
 		//NSLog(@"type %@ %d %d",mouseTriggerTypePopUp,eventType,index);
 		[mouseTriggerTypePopUp selectItemAtIndex:index];
 		
 		[anywhereButton setState:anywhere];
 		[anywhereButton setHidden:!is1043 || (!otherClick && !modifiersMask)];
-		int anchorMask= [[thisTrigger objectForKey:@"anchorMask"]intValue];
+		NSUInteger anchorMask= [[[currentTrigger info] objectForKey:@"anchorMask"]unsignedIntegerValue];
 		
-		int i;
+		NSInteger i;
 		for (i=1;i<9;i++){
-			[[anchorView viewWithTag:i]setState:(anchorMask&(1<<i))];
-			[[anchorView viewWithTag:i]setEnabled:!anywhere];
+			[[anchorView viewWithTag:i] setState:(anchorMask&(1<<i))];
+			[[anchorView viewWithTag:i] setEnabled:!anywhere];
 			
 		}
 		
@@ -652,16 +653,16 @@ BOOL is1043;
 			[[modifiersView viewWithTag:i]setState:(modifiersMask&(1<<i))];
 		}
 		
-		int clickCount=MAX(1,[[thisTrigger objectForKey:@"clickCount"]intValue]);
-		[mouseTriggerClickCountField setIntValue:clickCount];
-		[mouseTriggerClickCountStepper setIntValue:clickCount];
+		NSInteger clickCount=MAX(1,[[[currentTrigger info] objectForKey:@"clickCount"]integerValue]);
+		[mouseTriggerClickCountField setIntegerValue:clickCount];
+		[mouseTriggerClickCountStepper setIntegerValue:clickCount];
 		
 		
 		[mouseTriggerClickCountField setHidden:!clickEvent];
 		[mouseTriggerClickCountStepper setHidden:!clickEvent];
 		
 		BOOL delayableEvent=clickEvent || (eventType==NSMouseEntered);
-		NSNumber *delay=[thisTrigger objectForKey:@"delay"];
+		NSNumber *delay=[[currentTrigger info] objectForKey:@"delay"];
 		[mouseTriggerDelaySwitch setEnabled:delayableEvent];
 		[mouseTriggerDelaySwitch setState:delay && delayableEvent];
 		
@@ -674,56 +675,64 @@ BOOL is1043;
 	}	
 }
 
-
-
-
-- (IBAction) setMouseTriggerModifierFlag:(id)sender{
-	NSMutableDictionary *thisTrigger=currentTrigger;
+- (IBAction)setMouseTriggerModifierFlag:(id)sender{
 	
-	int mask=[[thisTrigger objectForKey:@"modifierFlags"]intValue];
+	NSUInteger mask=[[[currentTrigger info] objectForKey:@"modifierFlags"] unsignedIntegerValue];
 	
-	if ([sender state])
+	if ([(NSButton *)sender state])
 		mask |= 1<<[sender tag];
 	else
 		mask &= ~(1<<[sender tag]);
 	
 	//NSLog(@" %d",mask);
-	[thisTrigger setObject:[NSNumber numberWithInt:mask] forKey:@"modifierFlags"];
-	[[QSTriggerCenter sharedInstance] triggerChanged:thisTrigger];
+	[[currentTrigger info] setObject:[NSNumber numberWithInteger:mask] forKey:@"modifierFlags"];
+	[[QSTriggerCenter sharedInstance] triggerChanged:currentTrigger];
 	//	[triggerTable reloadData];
 	[self populateInfoFields];
 }
 
+// Method that is bound to a button in the .nib on whether or not the top (menu bar) side of the screen should be enabled for triggers (doesn't work on the main screen with the menu bar)
+-(BOOL)isMainDisplay {
+    NSArray *screens = [self screensForScreenTag:[[currentTrigger objectForKey:@"screen"] integerValue]];
+    if ([screens count] > 1) {
+        return NO;
+    }
+    return [[screens lastObject] isEqual:[NSScreen mainScreen]];
+}
 
 - (IBAction) setMouseTriggerValueForSender:(id)sender{
 	id nextResponder=nil;
-	NSMutableDictionary *thisTrigger=currentTrigger;
 	if (sender==mouseTriggerClickCountStepper){
-		[thisTrigger setObject:[sender objectValue] forKey:@"clickCount"];
+		[[currentTrigger info] setObject:[sender objectValue] forKey:@"clickCount"];
 	}else if (sender==mouseTriggerDelaySwitch){
 		
-		if ([sender state]){
-			[thisTrigger setObject:[NSNumber numberWithFloat:0.5f] forKey:@"delay"];
+		if ([(NSButton *)sender state]){
+			[[currentTrigger info] setObject:[NSNumber numberWithDouble:0.5] forKey:@"delay"];
 			nextResponder=mouseTriggerDelayField;
 		}else{
-			[[thisTrigger info] removeObjectForKey:@"delay"];
+			[[currentTrigger info] removeObjectForKey:@"delay"];
 		}
 		
 	}else if (sender==mouseTriggerDelayField){
-		float delay=[sender floatValue];
+		CGFloat delay=[sender doubleValue];
 		
 		if (delay>0)
-			[thisTrigger setObject:[NSNumber numberWithFloat:delay] forKey:@"delay"];
+			[[currentTrigger info] setObject:[NSNumber numberWithDouble:delay] forKey:@"delay"];
 		else
-			[thisTrigger removeObjectForKey:@"delay"];
+			[[currentTrigger info] removeObjectForKey:@"delay"];
 	}else if (sender==mouseTriggerScreenPopUp){
 		
-		[thisTrigger setObject:[NSNumber numberWithInt:[[sender selectedItem]tag]] forKey:@"screen"];
+		[[currentTrigger info] setObject:[NSNumber numberWithInteger:[[sender selectedItem]tag]] forKey:@"screen"];
 		//	NSLog(@"Screen set to: %x",[[sender selectedItem]tag]);
 	}else if (sender==anywhereButton){
-		[thisTrigger setObject:[sender objectValue] forKey:@"anywhere"];
+		[[currentTrigger info] setObject:[sender objectValue] forKey:@"anywhere"];
+        NSLog(@"%@",[sender objectValue]);
+        if ([sender objectValue]) {
+            // When the 'anywhere' button is pressed, make the text bold to show that it's activated
+            [anywhereButton setFont:[NSFont boldSystemFontOfSize:[[anywhereButton font] pointSize]]];
+        }
 	}
-	[[QSTriggerCenter sharedInstance] triggerChanged:thisTrigger];
+	[[QSTriggerCenter sharedInstance] triggerChanged:currentTrigger];
 	[self populateInfoFields];
 	if (nextResponder)
 		[[sender window]makeFirstResponder:nextResponder];
@@ -731,23 +740,21 @@ BOOL is1043;
 
 - (IBAction) setMouseTriggerAnchorMask:(id)sender{
 	
-	NSMutableDictionary *thisTrigger=currentTrigger;
-	int mask=[[thisTrigger objectForKey:@"anchorMask"]intValue];
+	NSUInteger mask=[[[currentTrigger info] objectForKey:@"anchorMask"] unsignedIntegerValue];
 	
-	if ([sender state])
+	if ([(NSButton *)sender state])
 		mask |= 1<<[sender tag];
 	else
 		mask &= ~(1<<[sender tag]);
 	
-	[thisTrigger setObject:[NSNumber numberWithInt:mask] forKey:@"anchorMask"];
-	[[QSTriggerCenter sharedInstance] triggerChanged:thisTrigger];
+	[[currentTrigger info] setObject:[NSNumber numberWithUnsignedInteger:mask] forKey:@"anchorMask"];
+	[[QSTriggerCenter sharedInstance] triggerChanged:currentTrigger];
 	//	[triggerTable reloadData];
 }
 - (IBAction) setMouseTriggerType:(id)sender{
 	
-	NSMutableDictionary *thisTrigger=currentTrigger;
-	int eventType=[[sender selectedItem]tag];
-	int buttonNumber=0;
+	NSInteger eventType=[[sender selectedItem]tag];
+	NSInteger buttonNumber=0;
 	switch (eventType){
 		case 25: buttonNumber=3; break;
 		case 26: eventType=25; buttonNumber=4; break;
@@ -755,16 +762,13 @@ BOOL is1043;
 		default: break;
 	}
 	
-	[thisTrigger setObject:[NSNumber numberWithInt:eventType] forKey:@"eventType"];
+	[[currentTrigger info] setObject:[NSNumber numberWithInteger:eventType] forKey:@"eventType"];
 	if (buttonNumber)
-		[thisTrigger setObject:[NSNumber numberWithInt:buttonNumber] forKey:@"buttonNumber"];
-	[[QSTriggerCenter sharedInstance] triggerChanged:thisTrigger];
+		[[currentTrigger info] setObject:[NSNumber numberWithInteger:buttonNumber] forKey:@"buttonNumber"];
+	[[QSTriggerCenter sharedInstance] triggerChanged:currentTrigger];
 	//	[triggerTable reloadData];
 	[self populateInfoFields];
 }
-
-
-
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)aNotification{
 	//NSLog(@"screen change!");
@@ -779,20 +783,20 @@ BOOL is1043;
 	
 }
 
-
-
 -(id)resolveProxyObject:(id)proxy{
 	
 	return [self mouseTriggerObject];
 }
 
 -(NSArray *)typesForProxyObject:(id)proxy{
-	return [[self mouseTriggerObject]types];
+	return [[self mouseTriggerObject] types];
 }
 
 
+- (id)mouseTriggerObject {
+    return [[mouseTriggerObject retain] autorelease];
+}
 
-- (id)mouseTriggerObject { return [[mouseTriggerObject retain] autorelease]; }
 - (void)setMouseTriggerObject:(id)newMouseTriggerObject
 {
     [mouseTriggerObject autorelease];

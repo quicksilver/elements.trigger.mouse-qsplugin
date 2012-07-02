@@ -1,13 +1,8 @@
-
-
 #import "QSMouseTriggerManager.h"
 #import "QSMouseTriggerView.h"
 #import "QSMouseTriggerDisplayView.h"
 
-//#import <QSInterface/QSInterface.h>
-
 #define ESIZE 1
-
 
 NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset){
     
@@ -30,9 +25,6 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
     
     return NSMakeRect(0,0,100,100);
 }
-
-
-
 
 @implementation QSMouseTriggerWindow
 
@@ -108,28 +100,32 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
         [[NSColor colorWithDeviceWhite:0.0 alpha:0.05]set];
     }else{
         [[NSColor clearColor]set];
-    }
-      // [[NSColor redColor]set];
-    
+    }    
     NSRectFill(rect);
     
 }
 
-
 - (void)mouseEntered:(NSEvent *)theEvent{ 
-	// ***warning   * should i check for a mouse exited event before showing?
-
-    if (dragging)return;
+    
+    NSEvent *mouseExited = [NSApp nextEventMatchingMask: NSMouseExited untilDate:[NSDate dateWithTimeIntervalSinceNow:0.1] inMode:NSEventTrackingRunLoopMode dequeue:YES];
+    
+    if (mouseExited) {
+        return;
+    }
+    
+    if (dragging) {
+        return;
+    }
     [self showTriggerList];
 	// NSLog(@"entered %x",[[self window]windowNumber]);
     active=YES;
     [self setNeedsDisplay:YES];
     
-    if (!captureMode)
-        [[self displayWindow]orderFront:self];
+    if (!captureMode) {
+        [[self displayWindow] orderFront:self];
+    }
     [[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:theEvent forView:self];
 	
-    
 }
 
 -(void)dealloc{
@@ -146,12 +142,15 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 }
 
 - (void)mouseExited:(NSEvent *)theEvent{
-    if (dragging)return;
+    if (dragging) {
+        return;
+    }
     active=NO;
     [self setNeedsDisplay:YES];
     
-    if (!captureMode)
+    if (!captureMode) {
         [[self displayWindow]orderOut:self];
+    }
     [[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:theEvent forView:self];
     
     
@@ -180,12 +179,10 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender{
 	//   NSLog(@"drag enter");
     dragging=YES;
-    [[self displayWindow]orderFront:self];
+    [[self displayWindow] orderFront:self];
 	[[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:nil type:101 forView:self];
     return NSDragOperationEvery;
 }
-
-
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender{
 	//NSLog(@"drag exit");
@@ -197,11 +194,12 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 }
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender{
-    dragging=NO;
-		[[QSMouseTriggerManager sharedInstance]setMouseTriggerObject:
+    dragging = NO;
+    
+    [[QSMouseTriggerManager sharedInstance] setMouseTriggerObject:
 			[QSObject objectWithPasteboard:[sender draggingPasteboard]]];
 		
-		[[self displayWindow]orderOut:self];
+    [[self displayWindow] orderOut:self];
 		
 	[[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:nil type:100 forView:self];
  
@@ -209,11 +207,9 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 	
 }
 
-
-
 - (NSWindow *)displayWindow{
     if (!displayWindow){
-        displayWindow=[[QSWindow alloc]initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
+        displayWindow= [[QSWindow alloc] initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
 
 		[displayWindow setShowEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"show",@"type",[NSNumber numberWithDouble:0.2],@"duration",nil]];
 		[displayWindow setHideEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"hide",@"type",[NSNumber numberWithDouble:0.2],@"duration",nil]];
@@ -235,7 +231,6 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
     return displayWindow;
     
 }
-
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)aNotification{
     [self updateFrame];

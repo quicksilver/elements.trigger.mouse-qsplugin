@@ -17,19 +17,54 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.1</string>
 	<key>CFBundleVersion</key>
-	<string>15A</string>
+	<string>16A</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2004, Blacktree, Inc.</string>
 	<key>QSPlugIn</key>
 	<dict>
 		<key>author</key>
-		<string>Blacktree, Inc.</string>
+		<string>Patrick Robertson, Blacktree, Inc.</string>
 		<key>categories</key>
 		<array>
 			<string>Quicksilver</string>
 		</array>
 		<key>description</key>
 		<string>Allows triggering with hot corners and edges of the main screen</string>
+		<key>extendedDescription</key>
+		<string>&lt;h2&gt;Mouse Triggers Plugin&lt;/h2&gt;
+
+&lt;p&gt;The mouse triggers plugin gives Quicksilver the ability to create triggers which are activated using mouse movements, clicks and dragging/dropping. Triggers are created in the same way as HotKey triggers, only their activation differs.&lt;/p&gt;
+
+&lt;h2&gt;Creating Triggers&lt;/h2&gt;
+
+&lt;h3&gt;Creating the Trigger&lt;/h3&gt;
+
+&lt;p&gt;To create a trigger, open the Quicksilver &lt;a href=&quot;qs://preferences#QSTriggersPrefPane&quot;&gt;triggers preferences&lt;/a&gt;, click the &apos;+&apos; button and select &apos;Mouse&apos; from the dropdown list.&lt;br /&gt;
+Set up the command as you would when creating a normal trigger. If you would like to create a drag/drop trigger, which enables you to drop items onto the mouse trigger points, see the &apos;Mouse Trigger Dragged Object&apos; proxy object section below.&lt;/p&gt;
+
+&lt;h3&gt;Adjusting the Activation&lt;/h3&gt;
+
+&lt;p&gt;To alter how the trigger is activated, open the trigger sidebar (by either clicking the &apos;i&apos; button or pressing ⌘I) and open the &apos;Settings&apos; pane. From this window, you can alter which mouse click (left, right, middle etc.) activates the trigger, how many clicks are required, and how long the associated mouse movement must be held for the trigger to activate.&lt;br /&gt;
+Below the &apos;Type&apos; and &apos;Delay&apos; options are options to select which screen the trigger can be activated on, and which side or corner of the screen.&lt;/p&gt;
+
+&lt;h3&gt;Modifiers and the &apos;Anywhere&apos; button&lt;/h3&gt;
+
+&lt;p&gt;The modifiers section of the settings allow you to add modifier keys to the mouse activation method. With modifiers enabled, a further &apos;Anywhere&apos; button appears in the &apos;Corners &amp; Edges&apos; screen. Clicking this allows the trigger to be activated if the correct modifiers and mouse movements are made anywhere on the screen. an example could be:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Type: Right Click &lt;strong&gt;x 2&lt;/strong&gt; (click the right mouse button twice)&lt;/li&gt;
+&lt;li&gt;Delay: 1s (hold the last right click for 1s)&lt;/li&gt;
+&lt;li&gt;Screen: All Displays (trigger works on all displays)&lt;/li&gt;
+&lt;li&gt;Corners &amp; Edges: Anywhere&lt;/li&gt;
+&lt;li&gt;Modifiers: ⌘⌥ (hold the ⌘ and ⌥ keys down whilst right clicking with the mouse)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Proxy Objects&lt;/h2&gt;
+
+&lt;h3&gt;Mouse Trigger Dragged Object&lt;/h3&gt;
+
+&lt;p&gt;The &apos;Mouse Trigger Dragged Object&apos; proxy object allows you to create triggers for items that you drag onto or drop onto the screen edges or corners. An example could be to move the dragged file into a specific folder on your hard drive. It is best to set up triggers that use the &apos;Mouse Trigger Dragged Object&apos; proxy object to work with the Drag Entered, Drag Exited and Drag and Drop &apos;Types&apos; in the trigger settings pane.&lt;/p&gt;</string>
 		<key>icon</key>
 		<string>Mouse</string>
 		<key>qsversion</key>

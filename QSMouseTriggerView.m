@@ -1,15 +1,10 @@
-
-
 #import "QSMouseTriggerManager.h"
 #import "QSMouseTriggerView.h"
 #import "QSMouseTriggerDisplayView.h"
 
-//#import <QSInterface/QSInterface.h>
-
 #define ESIZE 1
 
-
-NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
+NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset){
     
     switch(anchor){
         case QSMaxXAnchor:
@@ -31,9 +26,6 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     return NSMakeRect(0,0,100,100);
 }
 
-
-
-
 @implementation QSMouseTriggerWindow
 
 
@@ -46,7 +38,7 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
 @implementation QSMouseTriggerView
 
 
-+ (id)triggerWindowWithAnchor:(int)thisAnchor onScreenNum:(int)thisScreen{
++ (id)triggerWindowWithAnchor:(NSUInteger)thisAnchor onScreenNum:(NSInteger)thisScreen{
     NSWindow* window = [[[QSMouseTriggerWindow alloc]initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask|NSNonactivatingPanelMask backing:NSBackingStoreBuffered defer:YES]autorelease];
     [window setBackgroundColor: [NSColor clearColor]];
     [window setOpaque:NO];
@@ -61,7 +53,7 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     return window;
 }
 
-- (id)initWithFrame:(NSRect)frame anchor:(int)thisAnchor onScreenNum:(int)thisScreen{
+- (id)initWithFrame:(NSRect)frame anchor:(NSUInteger)thisAnchor onScreenNum:(NSInteger)thisScreen{
     self = [super initWithFrame:frame];
     if (self) {
         anchor=thisAnchor;
@@ -76,8 +68,6 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     [self registerForDraggedTypes:standardPasteboardTypes];
 }
 - (void)updateFrame{
-    int inset=0;
-    if (anchor>4) inset=32;
     NSRect rect=rectForAnchor(anchor,[[self screen]frame],anchor<5?2:1,64);
   //  NSLog(@"View %d:%d",screen, anchor);
 //logRect(rect);
@@ -110,28 +100,32 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
         [[NSColor colorWithDeviceWhite:0.0 alpha:0.05]set];
     }else{
         [[NSColor clearColor]set];
-    }
-      // [[NSColor redColor]set];
-    
+    }    
     NSRectFill(rect);
     
 }
 
-
 - (void)mouseEntered:(NSEvent *)theEvent{ 
-	// ***warning   * should i check for a mouse exited event before showing?
-
-    if (dragging)return;
+    
+    NSEvent *mouseExited = [NSApp nextEventMatchingMask: NSMouseExited untilDate:[NSDate dateWithTimeIntervalSinceNow:0.1] inMode:NSEventTrackingRunLoopMode dequeue:YES];
+    
+    if (mouseExited) {
+        return;
+    }
+    
+    if (dragging) {
+        return;
+    }
     [self showTriggerList];
 	// NSLog(@"entered %x",[[self window]windowNumber]);
     active=YES;
     [self setNeedsDisplay:YES];
     
-    if (!captureMode)
-        [[self displayWindow]orderFront:self];
+    if (!captureMode) {
+        [[self displayWindow] orderFront:self];
+    }
     [[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:theEvent forView:self];
 	
-    
 }
 
 -(void)dealloc{
@@ -148,12 +142,15 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
 }
 
 - (void)mouseExited:(NSEvent *)theEvent{
-    if (dragging)return;
+    if (dragging) {
+        return;
+    }
     active=NO;
     [self setNeedsDisplay:YES];
     
-    if (!captureMode)
+    if (!captureMode) {
         [[self displayWindow]orderOut:self];
+    }
     [[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:theEvent forView:self];
     
     
@@ -182,12 +179,10 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender{
 	//   NSLog(@"drag enter");
     dragging=YES;
-    [[self displayWindow]orderFront:self];
+    [[self displayWindow] orderFront:self];
 	[[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:nil type:101 forView:self];
     return NSDragOperationEvery;
 }
-
-
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender{
 	//NSLog(@"drag exit");
@@ -199,11 +194,12 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
 }
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender{
-    dragging=NO;
-		[[QSMouseTriggerManager sharedInstance]setMouseTriggerObject:
+    dragging = NO;
+    
+    [[QSMouseTriggerManager sharedInstance] setMouseTriggerObject:
 			[QSObject objectWithPasteboard:[sender draggingPasteboard]]];
 		
-		[[self displayWindow]orderOut:self];
+    [[self displayWindow] orderOut:self];
 		
 	[[QSMouseTriggerManager sharedInstance] handleMouseTriggerEvent:nil type:100 forView:self];
  
@@ -211,14 +207,12 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
 	
 }
 
-
-
 - (NSWindow *)displayWindow{
     if (!displayWindow){
-        displayWindow=[[QSWindow alloc]initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
+        displayWindow= [[QSWindow alloc] initWithContentRect:NSZeroRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
 
-		[displayWindow setShowEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"show",@"type",[NSNumber numberWithFloat:0.2],@"duration",nil]];
-		[displayWindow setHideEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"hide",@"type",[NSNumber numberWithFloat:0.2],@"duration",nil]];
+		[displayWindow setShowEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"show",@"type",[NSNumber numberWithDouble:0.2],@"duration",nil]];
+		[displayWindow setHideEffect:[NSDictionary dictionaryWithObjectsAndKeys:@"hide",@"type",[NSNumber numberWithDouble:0.2],@"duration",nil]];
 		
 			
         [displayWindow setHidesOnDeactivate:NO];
@@ -237,7 +231,6 @@ NSRect rectForAnchor(int anchor, NSRect rect,int size, int inset){
     return displayWindow;
     
 }
-
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)aNotification{
     [self updateFrame];

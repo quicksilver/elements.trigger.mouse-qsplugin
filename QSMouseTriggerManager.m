@@ -675,7 +675,7 @@ BOOL is1043;
 	}	
 }
 
-- (IBAction) setMouseTriggerModifierFlag:(id)sender{
+- (IBAction)setMouseTriggerModifierFlag:(id)sender{
 	
 	NSUInteger mask=[[[currentTrigger info] objectForKey:@"modifierFlags"] unsignedIntegerValue];
 	
@@ -691,6 +691,7 @@ BOOL is1043;
 	[self populateInfoFields];
 }
 
+// Method that is bound to a button in the .nib on whether or not the top (menu bar) side of the screen should be enabled for triggers (doesn't work on the main screen with the menu bar)
 -(BOOL)isMainDisplay {
     NSArray *screens = [self screensForScreenTag:[[currentTrigger objectForKey:@"screen"] integerValue]];
     if ([screens count] > 1) {

@@ -53,4 +53,9 @@
 - (id)mouseTriggerObject;
 - (void)setMouseTriggerObject:(id)newMouseTriggerObject;
 
-@end
+-(BOOL)isMainDisplay;
+
+-(NSArray *)screensForScreenTag:(NSInteger)screenTag;
+-(void)addTriggerDictionary:(NSDictionary *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens;
+
+    @end

@@ -1,8 +1,3 @@
-
-
-#import <AppKit/AppKit.h>
-
-
 @interface QSMouseTriggerDisplayView : NSView {
     BOOL active;
     NSUInteger anchor;

@@ -95,7 +95,7 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 }
 - (void)drawRect:(NSRect)rect {
     
-    if (1 ||active){
+    if (/* DISABLES CODE */ (1) ||active){
 		// ***warning   * this should be enabled only if dragging destination
         [[NSColor colorWithDeviceWhite:0.0 alpha:0.05]set];
     }else{
@@ -107,7 +107,7 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 
 - (void)mouseEntered:(NSEvent *)theEvent{ 
     
-    NSEvent *mouseExited = [NSApp nextEventMatchingMask: NSMouseExited untilDate:[NSDate dateWithTimeIntervalSinceNow:0.1] inMode:NSEventTrackingRunLoopMode dequeue:YES];
+    NSEvent *mouseExited = [NSApp nextEventMatchingMask:NSMouseExitedMask untilDate:[NSDate dateWithTimeIntervalSinceNow:0.1] inMode:NSEventTrackingRunLoopMode dequeue:YES];
     
     if (mouseExited) {
         return;

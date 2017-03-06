@@ -9,7 +9,6 @@
 #import "QSMouseTriggerManager.h"
 #import "QSMouseTriggerView.h"
 
-#import <Carbon/Carbon.h>
 #define QSTriggerCenter NSClassFromString(@"QSTriggerCenter")
 #define NSAllModifierKeysMask (NSShiftKeyMask|NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask|NSFunctionKeyMask)
 
@@ -91,7 +90,7 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 	return CallNextEventHandler(nextHandler, theEvent); 
 	return eventNotHandledErr;
 }
-BOOL is1043;
+
 @implementation QSMouseTriggerManager
 +(void)registerEventHandlers{
 	//	if (VERBOSE) NSLog(@"Registering for Global Mouse Events");
@@ -100,14 +99,9 @@ BOOL is1043;
 	EventHandlerUPP handlerFunction = NewEventHandlerUPP(mouseActivated);
 	InstallEventHandler(GetEventMonitorTarget(), handlerFunction, 2, eventType, NULL, &trackMouse);
 }
-+ (void)initialize{	
-	SInt32 version;
-	Gestalt (gestaltSystemVersion, &version);
-	if (version >= 0x1043){
-		is1043=YES;
-		[self registerEventHandlers];
-	}
-	
++ (void)initialize
+{
+	[self registerEventHandlers];
 }
 - (NSCell *)descriptionCellForTrigger:(QSTrigger *)trigger{
 	return	[[[QSMouseTriggerTableCell alloc]init]autorelease];
@@ -169,7 +163,7 @@ BOOL is1043;
 	return array;
 }
 
--(void)addTriggerDictionary:(NSDictionary *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens {
+-(void)addTriggerDictionary:(QSTrigger *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens {
     for (NSScreen *screen in screens) {
         NSMutableArray *matchedArray = 	[self anchorArrayForScreen:[screen screenNumber] anchor:anchor];
         if (![matchedArray containsObject:entry]) {
@@ -200,7 +194,7 @@ BOOL is1043;
     
 }
 
--(BOOL)enableTrigger:(NSDictionary *)entry{
+-(BOOL)enableTrigger:(QSTrigger *)entry{
 	NSUInteger anchorMask=[[entry objectForKey:@"anchorMask"] unsignedIntegerValue];
 	BOOL anywhere=[[entry objectForKey:@"anywhere"]boolValue];
     NSInteger screenTag = [[entry objectForKey:@"screen"] integerValue];
@@ -221,7 +215,7 @@ BOOL is1043;
     return YES;
 }
 
--(BOOL)disableTrigger:(NSDictionary *)entry{
+-(BOOL)disableTrigger:(QSTrigger *)entry{
 	//   NSString *theID=[entry objectForKey:kItemID];
     [[anchorArrays allValues]makeObjectsPerformSelector:@selector(removeObject:) withObject:entry];
 	[anywhereArray removeObject:entry];
@@ -260,7 +254,7 @@ BOOL is1043;
 	//BOOL checkForDelay=NO;
 	
 	//int inverseEvent=0;
-	NSEventType inverseEventMask = 1 << (type+1);
+	NSEventMask inverseEventMask = 1 << (type+1);
 	NSDate *date=[NSDate date];
 	CGFloat thisDelay = 0.0;
 	CGFloat longestDelay = 0.0;
@@ -434,7 +428,7 @@ BOOL is1043;
     
     NSInteger clickCount=[[dict objectForKey:@"clickCount"] integerValue];
     if (clickCount>1)
-        [desc appendFormat:@"%C%d",0x00D7,clickCount];
+        [desc appendFormat:@"%C%ld", 0x00D7, (long)clickCount];
     
     
 	//   NSLog(@"clickdel %@",[dict objectForKey:@"clickDelay"]);
@@ -553,7 +547,7 @@ BOOL is1043;
 
 - (NSView *) settingsView{
     if (!settingsView){
-        [NSBundle loadNibNamed:@"QSMouseTrigger" owner:self];		
+		[NSBundle loadNibNamed:@"QSMouseTrigger" owner:self];
 	}
 	//	NSLog(@"sview %@",settingsView);
     return [[settingsView retain] autorelease];
@@ -594,19 +588,19 @@ BOOL is1043;
 		NSScreen *screen;
 		while(screen=[e nextObject]){
 			NSString *name=[screen deviceName];
-			name=[name stringByAppendingString:[[NSString stringWithFormat:@" (%x)",[screen screenNumber]]uppercaseString]];
+			name=[name stringByAppendingString:[[NSString stringWithFormat:@" (%lx)", (long)[screen screenNumber]] uppercaseString]];
 			
 			[[mouseTriggerScreenPopUp menu] addItemWithTitle:name action:nil keyEquivalent:@""];
 			
 			[item setTag:[screen screenNumber]];
 		}
 		
-		int screenNum= [[[currentTrigger info] objectForKey:@"screen"]intValue];
+		NSUInteger screenNum = [[[currentTrigger info] objectForKey:@"screen"] integerValue];
 		if (anywhere)screenNum=-1;
 		[mouseTriggerScreenPopUp setEnabled:!anywhere];
 		item=[[mouseTriggerScreenPopUp menu]itemWithTag:screenNum];
 		if (!item){
-			item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:[NSString stringWithFormat:@"Other (%d)",screenNum] action:nil keyEquivalent:@""];
+			item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:[NSString stringWithFormat:@"Other (%lu)", (unsigned long)screenNum] action:nil keyEquivalent:@""];
 			[item setTag:screenNum];	
 		}
 		[mouseTriggerScreenPopUp selectItem:item];
@@ -614,7 +608,7 @@ BOOL is1043;
 		NSArray *screens=[NSScreen screens];
 		
 		if (screenNum==1 && [screens count]>1)
-			screenNum=[[[NSScreen screens]objectAtIndex:1]screenNumber];		
+			screenNum= [[[NSScreen screens] objectAtIndex:1] screenNumber];
 		if (screenNum<=0)
 			screenNum=[[screens objectAtIndex:0]screenNumber];
 		
@@ -637,7 +631,7 @@ BOOL is1043;
 		[mouseTriggerTypePopUp selectItemAtIndex:index];
 		
 		[anywhereButton setState:anywhere];
-		[anywhereButton setHidden:!is1043 || (!otherClick && !modifiersMask)];
+		[anywhereButton setHidden:(!otherClick && !modifiersMask)];
 		NSUInteger anchorMask= [[[currentTrigger info] objectForKey:@"anchorMask"]unsignedIntegerValue];
 		
 		NSInteger i;
@@ -774,7 +768,7 @@ BOOL is1043;
 	//NSLog(@"screen change!");
 	[anchorArrays removeAllObjects];
 	[anchorWindows removeAllObjects];
-	for(NSDictionary * trigger in [[QSTriggerCenter sharedInstance]triggers]){
+	for (QSTrigger *trigger in [[QSTriggerCenter sharedInstance]triggers]){
 		if ([[trigger objectForKey:@"type"]isEqualToString:@"QSMouseTrigger"]){
 			[self disableTrigger:trigger];
 			[self enableTrigger:trigger];

@@ -6,7 +6,7 @@
 //  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <QSCore/QSTriggerManager.h>
 #import "QSMouseTriggerView.h"
 
 @interface QSMouseTriggerManager : QSTriggerManager {
@@ -56,6 +56,6 @@
 -(BOOL)isMainDisplay;
 
 -(NSArray *)screensForScreenTag:(NSInteger)screenTag;
--(void)addTriggerDictionary:(NSDictionary *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens;
+-(void)addTriggerDictionary:(QSTrigger *)entry toAnchorArray:(NSUInteger)anchor forScreens:(NSArray *)screens;
 
     @end

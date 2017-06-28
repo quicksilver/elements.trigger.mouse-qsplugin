@@ -1,7 +1,3 @@
-
-
-#import <AppKit/AppKit.h>
-
 typedef enum _QSRectBits {
     QSCenterAnchor = 0,
     QSTopRightAnchor = 1,

@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.blacktree.Quicksilver.QSMouseTriggerPlugIn</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -89,6 +89,11 @@ Below the 'Type' and 'Delay' options are options to select which screen the trig
 			<key>QSMouseTrigger</key>
 			<string>QSMouseTriggerManager</string>
 		</dict>
+	</dict>
+	<key>QSRequirements</key>
+	<dict>
+		<key>version</key>
+		<string>4001</string>
 	</dict>
 </dict>
 </plist>

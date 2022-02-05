@@ -234,7 +234,7 @@ NSRect rectForAnchor(NSUInteger anchor, NSRect rect,CGFloat size, CGFloat inset)
 
 - (void)applicationDidChangeScreenParameters:(NSNotification *)aNotification{
     [self updateFrame];
-    //[self updateDisplayFrame];
+    [self updateDisplayFrame];
 	[displayWindow release];
 	displayWindow=nil;
 

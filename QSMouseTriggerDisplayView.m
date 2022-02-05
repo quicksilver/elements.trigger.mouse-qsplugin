@@ -1,8 +1,4 @@
-
-
 #import "QSMouseTriggerDisplayView.h"
-
-
 
 @implementation QSMouseTriggerDisplayView
 
@@ -11,11 +7,9 @@
     if (self) {
         anchor=thisAnchor;
         // Initialization code here.
-		
     }
     return self;
 }
-
 
 - (void)drawRect:(NSRect)rect {
     
@@ -25,17 +19,14 @@
 	//	NSRectFill(rect);
         NSImage *image=[[NSBundle bundleForClass:[QSMouseTriggerDisplayView class]]imageNamed:@"Flare"];
 		
-		
         NSRect drawRect=alignRectInRect(rectFromSize([image size]),rect,anchor);
         [image drawInRect:drawRect fromRect:rectFromSize([image size]) operation:NSCompositeSourceOver fraction:1.0];
         [highlight set];
         NSRectFillUsingOperation(rect,NSCompositeSourceIn);
-        
     } else {
         [self _drawRect:(NSRect)rect withGradientFrom:highlight to:[[NSColor selectedTextBackgroundColor] colorWithAlphaComponent:0.0] start:anchor-5];    
     }
 }
-
 
 - (void)_drawRect:(NSRect)rect withGradientFrom:(NSColor*)colorStart to:(NSColor*)colorEnd start:(NSRectEdge)edge{
     NSRect remainingRect;
@@ -52,7 +43,4 @@
     }
     NSRectFillListWithColors(&rects[0],&colors[0],index);
 }
-
-
-
 @end

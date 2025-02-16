@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21225" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21225"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,7 +28,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="381"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <button hidden="YES" fixedFrame="YES" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="194">
+                <button hidden="YES" tag="6" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="194">
                     <rect key="frame" x="115" y="-36" width="77" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Anywhere" bezelStyle="regularSquare" alignment="left" controlSize="small" enabled="NO" tag="6" inset="2" id="231">
@@ -39,7 +39,7 @@
                         <action selector="setMouseTriggerValueForSender:" target="-2" id="198"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="168">
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="168">
                     <rect key="frame" x="17" y="313" width="61" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Delay:" id="230">
@@ -48,7 +48,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="167">
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="167">
                     <rect key="frame" x="17" y="230" width="61" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="229">
@@ -59,7 +59,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="166">
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="166">
                     <rect key="frame" x="17" y="71" width="61" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Modifiers:" id="228">
@@ -68,7 +68,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="165">
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="165">
                     <rect key="frame" x="17" y="347" width="61" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Type:" id="227">
@@ -77,7 +77,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="164">
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="164">
                     <rect key="frame" x="17" y="282" width="61" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Screen:" id="226">
@@ -86,7 +86,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="92">
+                <popUpButton tag="1" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="92">
                     <rect key="frame" x="92" y="275" width="159" height="22"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Secondary Display" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="89" id="225">
@@ -106,7 +106,7 @@
                         <action selector="setMouseTriggerValueForSender:" target="-2" id="116"/>
                     </connections>
                 </popUpButton>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="41">
+                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="41">
                     <rect key="frame" x="164" y="311" width="45" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" placeholderString="0 s" drawsBackground="YES" id="224">
@@ -138,15 +138,15 @@
                 </button>
                 <box fixedFrame="YES" boxType="oldStyle" borderType="none" title="Title" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="39">
                     <rect key="frame" x="95" y="20" width="205" height="66"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="Cyn-Nf-QMm">
                         <rect key="frame" x="0.0" y="0.0" width="205" height="66"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button toolTip="Command key" fixedFrame="YES" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="36">
+                            <button toolTip="Command key" tag="20" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="36">
                                 <rect key="frame" x="0.0" y="49" width="98" height="18"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <buttonCell key="cell" type="check" title="⌘ Command" bezelStyle="regularSquare" alignment="left" controlSize="small" tag="20" inset="2" id="218">
+                                <buttonCell key="cell" type="check" title="⌘ Command" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" tag="20" inset="2" id="218">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -154,10 +154,10 @@
                                     <action selector="setMouseTriggerModifierFlag:" target="-2" id="134"/>
                                 </connections>
                             </button>
-                            <button toolTip="Option key" fixedFrame="YES" tag="19" translatesAutoresizingMaskIntoConstraints="NO" id="43">
+                            <button toolTip="Option key" tag="19" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="43">
                                 <rect key="frame" x="0.0" y="29" width="83" height="18"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <buttonCell key="cell" type="check" title="⌥ Option" bezelStyle="regularSquare" alignment="left" controlSize="small" tag="19" inset="2" id="219">
+                                <buttonCell key="cell" type="check" title="⌥ Option" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" tag="19" inset="2" id="219">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -165,10 +165,10 @@
                                     <action selector="setMouseTriggerModifierFlag:" target="-2" id="139"/>
                                 </connections>
                             </button>
-                            <button toolTip="Control key" fixedFrame="YES" tag="18" translatesAutoresizingMaskIntoConstraints="NO" id="45">
+                            <button toolTip="Control key" tag="18" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="45">
                                 <rect key="frame" x="101" y="47" width="100" height="18"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <buttonCell key="cell" type="check" title="⌃ Control" bezelStyle="regularSquare" alignment="left" controlSize="small" tag="18" inset="2" id="220">
+                                <buttonCell key="cell" type="check" title="⌃ Control" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" tag="18" inset="2" id="220">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -176,10 +176,10 @@
                                     <action selector="setMouseTriggerModifierFlag:" target="-2" id="138"/>
                                 </connections>
                             </button>
-                            <button toolTip="Shift key" fixedFrame="YES" tag="17" translatesAutoresizingMaskIntoConstraints="NO" id="24">
+                            <button toolTip="Shift key" tag="17" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="24">
                                 <rect key="frame" x="0.0" y="9" width="100" height="18"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <buttonCell key="cell" type="check" title="⇧ Shift" bezelStyle="regularSquare" alignment="left" controlSize="small" tag="17" inset="2" id="217">
+                                <buttonCell key="cell" type="check" title="⇧ Shift" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" tag="17" inset="2" id="217">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -187,10 +187,10 @@
                                     <action selector="setMouseTriggerModifierFlag:" target="-2" id="137"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="23" translatesAutoresizingMaskIntoConstraints="NO" id="77">
+                            <button tag="23" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="77">
                                 <rect key="frame" x="101" y="29" width="93" height="18"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <buttonCell key="cell" type="check" title="[fn] Function" bezelStyle="regularSquare" alignment="left" controlSize="small" tag="23" inset="2" id="221">
+                                <buttonCell key="cell" type="check" title="[fn] Function" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" tag="23" inset="2" id="221">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -198,10 +198,10 @@
                                     <action selector="setMouseTriggerModifierFlag:" target="-2" id="136"/>
                                 </connections>
                             </button>
-                            <button toolTip="Shift key" fixedFrame="YES" tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="196">
+                            <button toolTip="Shift key" tag="16" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="196">
                                 <rect key="frame" x="101" y="8" width="100" height="18"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <buttonCell key="cell" type="check" title="⇪ Caps Lock" bezelStyle="regularSquare" alignment="left" controlSize="small" tag="16" inset="2" id="222">
+                                <buttonCell key="cell" type="check" title="⇪ Caps Lock" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" tag="16" inset="2" id="222">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -209,7 +209,7 @@
                         </subviews>
                     </view>
                 </box>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="32">
+                <popUpButton tag="1" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="32">
                     <rect key="frame" x="92" y="340" width="159" height="22"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Right Click" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" tag="3" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="37" id="216">
@@ -240,7 +240,7 @@
                         <action selector="setMouseTriggerType:" target="-2" id="135"/>
                     </connections>
                 </popUpButton>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21">
+                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21">
                     <rect key="frame" x="253" y="342" width="23" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" alignment="left" title="×2" id="215">
@@ -264,12 +264,16 @@
                 </stepper>
                 <box fixedFrame="YES" boxType="oldStyle" borderType="none" title="Anchors" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="19">
                     <rect key="frame" x="95" y="106" width="194" height="154"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="1eI-io-ejR">
                         <rect key="frame" x="0.0" y="0.0" width="194" height="154"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="188">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="149" customClass="QSDesktopBackgroundView">
+                                <rect key="frame" x="21" y="21" width="152" height="112"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </customView>
+                            <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="188">
                                 <rect key="frame" x="19" y="139" width="156" height="14"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="menu bar" drawsBackground="YES" id="213">
@@ -278,7 +282,7 @@
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </textFieldCell>
                             </textField>
-                            <button fixedFrame="YES" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="26">
+                            <button tag="2" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="26">
                                 <rect key="frame" x="0.0" y="138" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="2" inset="2" id="208">
@@ -289,7 +293,7 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="129"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="38">
+                            <button tag="8" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="38">
                                 <rect key="frame" x="18" y="138" width="158" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" enabled="NO" borderStyle="border" tag="8" inset="2" id="211">
@@ -301,7 +305,7 @@
                                     <binding destination="-2" name="hidden" keyPath="isMainDisplay" id="267"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="31">
+                            <button tag="1" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31">
                                 <rect key="frame" x="178" y="138" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="1" inset="2" id="210">
@@ -312,7 +316,7 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="127"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="11">
+                            <button tag="5" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="11">
                                 <rect key="frame" x="0.0" y="17" width="16" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="5" inset="2" id="205">
@@ -323,7 +327,7 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="130"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="12">
+                            <button tag="3" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="12">
                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="3" inset="2" id="206">
@@ -334,7 +338,7 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="131"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="10">
+                            <button tag="6" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10">
                                 <rect key="frame" x="17" y="0.0" width="160" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="6" inset="2" id="204">
@@ -345,7 +349,7 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="124"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="25">
+                            <button tag="4" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="25">
                                 <rect key="frame" x="178" y="0.0" width="16" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="4" inset="2" id="207">
@@ -356,7 +360,7 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="125"/>
                                 </connections>
                             </button>
-                            <button fixedFrame="YES" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="30">
+                            <button tag="7" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="30">
                                 <rect key="frame" x="178" y="17" width="16" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="7" inset="2" id="209">
@@ -367,23 +371,10 @@
                                     <action selector="setMouseTriggerAnchorMask:" target="-2" id="126"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="152">
-                                <rect key="frame" x="17" y="17" width="160" height="120"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="212">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.85000001999999997" colorSpace="calibratedRGB"/>
-                                </textFieldCell>
-                            </textField>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="149" customClass="QSDesktopBackgroundView">
-                                <rect key="frame" x="21" y="21" width="152" height="112"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </customView>
-                            <button toolTip="Activate the trigger anywhere on screen" fixedFrame="YES" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="199">
-                                <rect key="frame" x="65" y="66" width="64" height="23"/>
+                            <button toolTip="Activate the trigger anywhere on screen" tag="9" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="199">
+                                <rect key="frame" x="55" y="66" width="85" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <buttonCell key="cell" type="square" title="Anywhere" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="9" inset="2" id="214">
+                                <buttonCell key="cell" type="square" title="Click Anywhere" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="9" inset="2" id="214">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                     <font key="font" metaFont="label"/>
                                 </buttonCell>

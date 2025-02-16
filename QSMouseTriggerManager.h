@@ -26,7 +26,7 @@
     IBOutlet NSTextField *mouseTriggerDelayField;
     IBOutlet NSButton *menuBarAnchorButton;
     IBOutlet NSButton *anywhereButton;
-	IBOutlet id desktopImageView;
+	IBOutlet QSDesktopBackgroundView *desktopImageView;
 	
 	
 	id mouseTriggerObject;

@@ -10,7 +10,7 @@
 #import "QSMouseTriggerView.h"
 
 #define QSTriggerCenter NSClassFromString(@"QSTriggerCenter")
-#define NSAllModifierKeysMask (NSShiftKeyMask|NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask|NSFunctionKeyMask)
+#define NSAllModifierKeysMask (NSEventModifierFlagShift|NSEventModifierFlagControl|NSEventModifierFlagOption|NSEventModifierFlagCommand|NSEventModifierFlagFunction)
 
 @implementation NSEvent (CarbonConversion)
 - (NSEvent *)mouseEventWithCarbonClickEvent:(EventRef)theEvent{
@@ -268,7 +268,7 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
         if (!theEvent) {
             theEvent = [NSApp currentEvent];
         }
-		if (type==NSOtherMouseDown && [[[thisTrigger info] objectForKey:@"buttonNumber"] integerValue]!=([theEvent buttonNumber]+1)) {
+		if (type==NSEventTypeOtherMouseDown && [[[thisTrigger info] objectForKey:@"buttonNumber"] integerValue]!=([theEvent buttonNumber]+1)) {
             continue;
         }
         
@@ -280,7 +280,7 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
             continue;
         }
 		
-		if (type==NSLeftMouseDown || type==NSRightMouseDown || type==NSOtherMouseDown){
+		if (type==NSEventTypeLeftMouseDown || type==NSEventTypeRightMouseDown || type==NSEventTypeOtherMouseDown){
 #warning if only single click events are enabled, multi clicks should still resolve
 			NSInteger clickCount=[[[thisTrigger info] objectForKey:@"clickCount"] unsignedIntegerValue];
 			if (!clickCount) {
@@ -366,11 +366,15 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 	
 	if (anchors&QSBottomLeftAnchorMask)
 		[anchorArray addObject:[NSString stringWithFormat:@"%C",0x2199]];
-				
+			
+	if ([self triggerIsAnywhere:dict]) {
+		[anchorArray addObject:@"⭑"];
+	}
+
 	[desc appendString:[self descriptionForMouseTrigger:dict]];
 	
 	if ([anchorArray count])
-		[desc appendFormat:@"(%@)",[anchorArray componentsJoinedByString:@","]];
+		[desc appendFormat:@" [%@]",[anchorArray componentsJoinedByString:@","]];
 				
 				
 	return desc;
@@ -382,31 +386,41 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
     NSMutableString *desc=[NSMutableString stringWithCapacity:0];
     
     NSUInteger modifiers=[[dict objectForKey:@"modifierFlags"] unsignedIntegerValue];
-	
-	
     
-    if (modifiers&NSShiftKeyMask)[desc appendFormat:@"%C",0x21e7];
-    if (modifiers&NSControlKeyMask)[desc appendFormat:@"%C",0x2303];
-    if (modifiers&NSAlternateKeyMask)[desc appendFormat:@"%C",0x2325];
-    if (modifiers&NSCommandKeyMask)[desc appendFormat:@"%C",0x2318];
-    if (modifiers&NSFunctionKeyMask)[desc appendString:@"Fn"];
+	if (modifiers & NSEventModifierFlagShift) {
+		[desc appendFormat:@"%C",0x21e7];
+	}
+	if (modifiers & NSEventModifierFlagControl) {
+		[desc appendFormat:@"%C",0x2303];
+	}
+	if (modifiers & NSEventModifierFlagOption) {
+		[desc appendFormat:@"%C",0x2325];
+	}
+	if (modifiers & NSEventModifierFlagCommand) {
+		[desc appendFormat:@"%C",0x2318];
+	}
+	if (modifiers & NSEventModifierFlagFunction) {
+		[desc appendString:@"Fn"];
+	}
+
+
     
-    NSEventType type=[[dict objectForKey:@"eventType"] unsignedIntegerValue];
+    NSEventType type = [[dict objectForKey:@"eventType"] unsignedIntegerValue];
 	
 	
     switch (type){
-        case NSLeftMouseDown:
-            [desc appendFormat:@"%C",0x25BD];
+		case NSEventTypeLeftMouseDown:
+			[desc appendString:@"🖱️"];
             break;
-        case NSRightMouseDown:
-            [desc appendFormat:@"%C%C",0x25BD,0x1D3F];
+		case NSEventTypeRightMouseDown:
+            [desc appendFormat:@"🖱️%C ", 0x1D3F];
             break;
-        case NSOtherMouseDown:
+		case NSEventTypeOtherMouseDown:
 			switch ([[dict objectForKey:@"buttonNumber"] integerValue]){
-				case 3: [desc appendFormat:@"%C%C",0x25BD,0x00B3]; break;
-				case 4: [desc appendFormat:@"%C%C",0x25BD,0x2074]; break;
-				case 5: [desc appendFormat:@"%C%C",0x25BD,0x2075]; break;
-				default:  [desc appendFormat:@"%C?",0x25BD]; break;
+				case 3: [desc appendFormat:@"🖱️%C ", 0x00B3]; break;
+				case 4: [desc appendFormat:@"🖱️%C ", 0x2074]; break;
+				case 5: [desc appendFormat:@"🖱️%C ", 0x2075]; break;
+				default:  [desc appendString:@"🖱️? "]; break;
 			}
             break;
         case 101:
@@ -415,10 +429,10 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
         case 102:
             [desc appendFormat:@"Drag Exit"];
             break;
-        case NSMouseEntered:
+		case NSEventTypeMouseEntered:
             [desc appendFormat:@"Mouse Enter"];
             break;
-		case NSMouseExited:
+		case NSEventTypeMouseExited:
             [desc appendFormat:@"Mouse Exit"];
             break;
         default:
@@ -465,9 +479,9 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
             visible=YES;
             NSEventType type=[[[thisTrigger info] objectForKey:@"eventType"] unsignedIntegerValue];
             switch (type){
-                case NSLeftMouseDown:
-                case NSRightMouseDown:
-                case NSOtherMouseDown:
+				case NSEventTypeLeftMouseDown:
+				case NSEventTypeRightMouseDown:
+				case NSEventTypeOtherMouseDown:
                     clickable=YES;
                     break;
                 case 100:
@@ -475,7 +489,7 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 				case 102:
                     draggable=YES;
                     break;
-                case NSMouseEntered:
+				case NSEventTypeMouseEntered:
                     break;
                 default:
                     break;
@@ -553,91 +567,112 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
     return [[settingsView retain] autorelease];
 }
 
+- (void)setupScreenMenu:(BOOL)anywhere otherClick:(BOOL)otherClick {
+	
+	[mouseTriggerScreenPopUp removeAllItems];
+	NSMenuItem *item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"All Displays" action:nil keyEquivalent:@""];
+	[item setTag:-1];
+	
+	item=[NSMenuItem separatorItem];
+	[item setTag:NSNotFound];
+	[[mouseTriggerScreenPopUp menu]addItem:item];
+	
+	item=	[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"Main Display" action:nil keyEquivalent:@""];
+	[item setTag:0];
+	item=	[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"Secondary Display" action:nil keyEquivalent:@""];
+	[item setTag:1];
+	
+	item=[NSMenuItem separatorItem];
+	[item setTag:NSNotFound];
+	[[mouseTriggerScreenPopUp menu]addItem:item];
+	
+	item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"Specific Displays:" action:nil keyEquivalent:@""];
+	[item setTarget:nil];
+	
+	NSEnumerator *e=[[NSScreen screens]objectEnumerator];
+	NSScreen *screen;
+	while(screen=[e nextObject]){
+		NSString *name=[screen deviceName];
+		name=[name stringByAppendingString:[[NSString stringWithFormat:@" (%lx)", (long)[screen screenNumber]] uppercaseString]];
+		
+		[[mouseTriggerScreenPopUp menu] addItemWithTitle:name action:nil keyEquivalent:@""];
+		
+		[item setTag:[screen screenNumber]];
+	}
+	
+	NSUInteger screenNum = [[[currentTrigger info] objectForKey:@"screen"] integerValue];
+	if (anywhere) {
+		screenNum=-1;
+	}
+	[mouseTriggerScreenPopUp setEnabled:!anywhere];
+	item=[[mouseTriggerScreenPopUp menu]itemWithTag:screenNum];
+	if (!item){
+		item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:[NSString stringWithFormat:@"Other (%lu)", (unsigned long)screenNum] action:nil keyEquivalent:@""];
+		[item setTag:screenNum];
+	}
+	[mouseTriggerScreenPopUp selectItem:item];
+	
+	NSArray *screens=[NSScreen screens];
+	
+	// get the screen number
+	if (screenNum == 1 && [screens count] > 1)
+		screenNum = [[[NSScreen screens] objectAtIndex:1] screenNumber];
+	if (screenNum<=0)
+		screenNum=[[screens objectAtIndex:0] screenNumber];
+	
+	[desktopImageView setScreenNumber:screenNum];
+	
+	
+	[menuBarAnchorButton setEnabled:screenNum];
+	
+	
+}
 
+
+- (BOOL)triggerIsAnywhere:(NSDictionary *)dict {
+	NSEventType eventType = [[dict objectForKey:@"eventType"] unsignedIntegerValue];
+	BOOL otherClick = (eventType==NSEventTypeOtherMouseDown);
+	
+	NSUInteger modifiersMask = [[dict objectForKey:@"modifierFlags"] unsignedIntegerValue];
+	return [[dict objectForKey:@"anywhere"] boolValue] && (!otherClick && modifiersMask) || (otherClick);
+}
 
 - (void)populateInfoFields{
 	//NSLog(@"trigger %@",currentTrigger);
 	if([[currentTrigger type] isEqualToString:@"QSMouseTrigger"]){
-		NSEventType eventType=[[[currentTrigger info] objectForKey:@"eventType"] unsignedIntegerValue];
-		BOOL otherClick=eventType==NSOtherMouseDown;
+		NSEventType eventType = [[[currentTrigger info] objectForKey:@"eventType"] unsignedIntegerValue];
+		BOOL otherClick = (eventType==NSEventTypeOtherMouseDown);
 		
-		NSUInteger modifiersMask=[[[currentTrigger info] objectForKey:@"modifierFlags"]unsignedIntegerValue];
-		BOOL anywhere=[[[currentTrigger info] objectForKey:@"anywhere"]boolValue] && (otherClick);
+		NSUInteger modifiersMask = [[[currentTrigger info] objectForKey:@"modifierFlags"] unsignedIntegerValue];
+		BOOL anywhere = [self triggerIsAnywhere:[currentTrigger info]];
 		
-		[mouseTriggerScreenPopUp removeAllItems];
-		NSMenuItem *item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"All Displays" action:nil keyEquivalent:@""];
-		[item setTag:-1];
-		
-		item=[NSMenuItem separatorItem];
-		[item setTag:NSNotFound];
-		[[mouseTriggerScreenPopUp menu]addItem:item];
-		
-		item=	[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"Main Display" action:nil keyEquivalent:@""];
-		[item setTag:0];
-		item=	[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"Secondary Display" action:nil keyEquivalent:@""];
-		[item setTag:1];
-		
-		item=[NSMenuItem separatorItem];
-		[item setTag:NSNotFound];
-		[[mouseTriggerScreenPopUp menu]addItem:item];
-		
-		item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:@"Specific Displays:" action:nil keyEquivalent:@""];
-		[item setTarget:nil];
-		
-		NSEnumerator *e=[[NSScreen screens]objectEnumerator];
-		NSScreen *screen;
-		while(screen=[e nextObject]){
-			NSString *name=[screen deviceName];
-			name=[name stringByAppendingString:[[NSString stringWithFormat:@" (%lx)", (long)[screen screenNumber]] uppercaseString]];
-			
-			[[mouseTriggerScreenPopUp menu] addItemWithTitle:name action:nil keyEquivalent:@""];
-			
-			[item setTag:[screen screenNumber]];
-		}
-		
-		NSUInteger screenNum = [[[currentTrigger info] objectForKey:@"screen"] integerValue];
-		if (anywhere)screenNum=-1;
-		[mouseTriggerScreenPopUp setEnabled:!anywhere];
-		item=[[mouseTriggerScreenPopUp menu]itemWithTag:screenNum];
-		if (!item){
-			item=[[mouseTriggerScreenPopUp menu] addItemWithTitle:[NSString stringWithFormat:@"Other (%lu)", (unsigned long)screenNum] action:nil keyEquivalent:@""];
-			[item setTag:screenNum];	
-		}
-		[mouseTriggerScreenPopUp selectItem:item];
-		
-		NSArray *screens=[NSScreen screens];
-		
-		if (screenNum==1 && [screens count]>1)
-			screenNum= [[[NSScreen screens] objectAtIndex:1] screenNumber];
-		if (screenNum<=0)
-			screenNum=[[screens objectAtIndex:0]screenNumber];
-		
-		[desktopImageView setScreenNumber:screenNum];
-		
-		
-		[menuBarAnchorButton setEnabled:screenNum];
-		
-		
-		
-		
-		
-		BOOL clickEvent=(eventType==NSLeftMouseDown || eventType==NSRightMouseDown || eventType==NSOtherMouseDown);
-		
-		if (eventType==NSOtherMouseDown)
+		// set up the screen pop menu item, allows user to choose which screen to trigger on
+		[self setupScreenMenu:anywhere otherClick:otherClick];
+	
+		// set the event type
+		BOOL clickEvent = (eventType==NSEventTypeLeftMouseDown || eventType==NSEventTypeRightMouseDown || eventType==NSEventTypeOtherMouseDown);
+
+		if (eventType==NSEventTypeOtherMouseDown) {
 			eventType+= (NSUInteger)[[[currentTrigger info] objectForKey:@"buttonNumber"] integerValue]-3;
+		}
 		
 		NSInteger index=[mouseTriggerTypePopUp indexOfItemWithTag:eventType];
 		//NSLog(@"type %@ %d %d",mouseTriggerTypePopUp,eventType,index);
 		[mouseTriggerTypePopUp selectItemAtIndex:index];
 		
+		// set the anywhere button state
+		
+		// hide anywhere button if it's a normal click
 		[anywhereButton setState:anywhere];
 		[anywhereButton setHidden:(!otherClick && !modifiersMask)];
 		NSUInteger anchorMask= [[[currentTrigger info] objectForKey:@"anchorMask"]unsignedIntegerValue];
 		
 		NSInteger i;
 		for (i=1;i<9;i++){
-			[[anchorView viewWithTag:i] setState:(anchorMask&(1<<i))];
-			[[anchorView viewWithTag:i] setEnabled:!anywhere];
+			NSButton *b = [anchorView viewWithTag:i];
+			// log the frame
+			[b setState:(anchorMask&(1<<i))];
+			[b setEnabled:!anywhere];
 			
 		}
 		
@@ -655,7 +690,7 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 		[mouseTriggerClickCountField setHidden:!clickEvent];
 		[mouseTriggerClickCountStepper setHidden:!clickEvent];
 		
-		BOOL delayableEvent=clickEvent || (eventType==NSMouseEntered);
+		BOOL delayableEvent=clickEvent || (eventType==NSEventTypeMouseEntered);
 		NSNumber *delay=[[currentTrigger info] objectForKey:@"delay"];
 		[mouseTriggerDelaySwitch setEnabled:delayableEvent];
 		[mouseTriggerDelaySwitch setState:delay && delayableEvent];
@@ -698,7 +733,7 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 	id nextResponder=nil;
 	if (sender==mouseTriggerClickCountStepper){
 		[[currentTrigger info] setObject:[sender objectValue] forKey:@"clickCount"];
-	}else if (sender==mouseTriggerDelaySwitch){
+	} else if (sender==mouseTriggerDelaySwitch){
 		
 		if ([(NSButton *)sender state]){
 			[[currentTrigger info] setObject:[NSNumber numberWithDouble:0.5] forKey:@"delay"];
@@ -707,29 +742,28 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 			[[currentTrigger info] removeObjectForKey:@"delay"];
 		}
 		
-	}else if (sender==mouseTriggerDelayField){
+	} else if (sender==mouseTriggerDelayField){
 		CGFloat delay=[sender doubleValue];
 		
 		if (delay>0)
 			[[currentTrigger info] setObject:[NSNumber numberWithDouble:delay] forKey:@"delay"];
 		else
 			[[currentTrigger info] removeObjectForKey:@"delay"];
-	}else if (sender==mouseTriggerScreenPopUp){
+	} else if (sender==mouseTriggerScreenPopUp){
 		
 		[[currentTrigger info] setObject:[NSNumber numberWithInteger:[[sender selectedItem]tag]] forKey:@"screen"];
 		//	NSLog(@"Screen set to: %x",[[sender selectedItem]tag]);
-	}else if (sender==anywhereButton){
+	} else if (sender==anywhereButton){
 		[[currentTrigger info] setObject:[sender objectValue] forKey:@"anywhere"];
-        NSLog(@"%@",[sender objectValue]);
-        if ([sender objectValue]) {
-            // When the 'anywhere' button is pressed, make the text bold to show that it's activated
-            [anywhereButton setFont:[NSFont boldSystemFontOfSize:[[anywhereButton font] pointSize]]];
-        }
+		if ([sender objectValue]) {
+			[anywhereButton setFont:[NSFont boldSystemFontOfSize:[[anywhereButton font] pointSize]]];
+		}
 	}
 	[[QSTriggerCenter sharedInstance] triggerChanged:currentTrigger];
 	[self populateInfoFields];
-	if (nextResponder)
-		[[sender window]makeFirstResponder:nextResponder];
+	if (nextResponder) {
+		[[sender window] makeFirstResponder:nextResponder];
+	}
 }
 
 - (IBAction) setMouseTriggerAnchorMask:(id)sender{
@@ -747,7 +781,12 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 }
 - (IBAction) setMouseTriggerType:(id)sender{
 	
-	NSInteger eventType=[[sender selectedItem]tag];
+	
+	// types as per the NIB:
+	// weClick, right click, mouse button 3, mouse button 4 ...
+	NSInteger eventType= [[sender selectedItem] tag];
+	
+	// button numbe ris the mouse button  number, e.g. 1 (left), 2 (right), 3 (middle) etc. Don't know what 4 and 5 are
 	NSInteger buttonNumber=0;
 	switch (eventType){
 		case 25: buttonNumber=3; break;

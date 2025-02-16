@@ -16,6 +16,7 @@
 		7FFA8B000815BA5A00A858CD /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FFA8AFF0815BA5A00A858CD /* Carbon.framework */; };
 		8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92D38A0106425D02CA0E72 /* Cocoa.framework */; };
 		CD15CA6115A227BF0072200D /* QSMouseTrigger.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD15CA6015A227BF0072200D /* QSMouseTrigger.xib */; };
+		CD7B3E672D621E28008B8715 /* QSInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD7B3E662D621E28008B8715 /* QSInterface.framework */; };
 		E1022AE906B3469300299BEC /* QSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1022AE706B3469300299BEC /* QSCore.framework */; };
 		E131F8B007B447EF00D0E4AC /* QSFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131F8AE07B447EF00D0E4AC /* QSFoundation.framework */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,7 @@
 		8D1AC9730486D14A00FE50C9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1AC9740486D14A00FE50C9 /* Mouse Triggers.qsplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mouse Triggers.qsplugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD15CA6015A227BF0072200D /* QSMouseTrigger.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QSMouseTrigger.xib; sourceTree = "<group>"; };
+		CD7B3E662D621E28008B8715 /* QSInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QSInterface.framework; path = ../../../../../private/tmp/QS/build/Debug/QSInterface.framework; sourceTree = "<group>"; };
 		DD92D38A0106425D02CA0E72 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		E1022AE706B3469300299BEC /* QSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E131F8AD07B447EF00D0E4AC /* QSEffects.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QSEffects.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +56,7 @@
 				E1022AE906B3469300299BEC /* QSCore.framework in Frameworks */,
 				E131F8B007B447EF00D0E4AC /* QSFoundation.framework in Frameworks */,
 				7FD8F6E307EBA6EE00F57CB7 /* QSEffects.framework in Frameworks */,
+				CD7B3E672D621E28008B8715 /* QSInterface.framework in Frameworks */,
 				7FFA8B000815BA5A00A858CD /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +110,7 @@
 		2E58F364FFB232C311CA0CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD7B3E662D621E28008B8715 /* QSInterface.framework */,
 				7FFA8AFF0815BA5A00A858CD /* Carbon.framework */,
 				DD92D38A0106425D02CA0E72 /* Cocoa.framework */,
 				E131F8AE07B447EF00D0E4AC /* QSFoundation.framework */,

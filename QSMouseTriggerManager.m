@@ -755,9 +755,6 @@ OSStatus mouseActivated(EventHandlerCallRef nextHandler, EventRef theEvent, void
 		//	NSLog(@"Screen set to: %x",[[sender selectedItem]tag]);
 	} else if (sender==anywhereButton){
 		[[currentTrigger info] setObject:[sender objectValue] forKey:@"anywhere"];
-		if ([sender objectValue]) {
-			[anywhereButton setFont:[NSFont boldSystemFontOfSize:[[anywhereButton font] pointSize]]];
-		}
 	}
 	[[QSTriggerCenter sharedInstance] triggerChanged:currentTrigger];
 	[self populateInfoFields];
